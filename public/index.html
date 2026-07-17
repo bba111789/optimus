@@ -451,28 +451,58 @@
 
   .stepper { display: grid; grid-template-columns: repeat(4, 1fr); border-bottom: 1px solid var(--border); }
   .step-tab {
-    display: flex; flex-direction: column; gap: 5px; text-align: left;
-    padding: 16px 18px; background: transparent; border: none; border-right: 1px solid var(--border);
-    cursor: pointer; position: relative; color: var(--muted);
-    transition: background .2s ease;
+    display: flex; align-items: center; gap: 10px; text-align: left;
+    padding: 14px 16px; background: color-mix(in oklab, var(--step-color) 6%, transparent);
+    border: none; border-right: 1px solid var(--border);
+    cursor: pointer; position: relative; color: var(--muted); overflow: hidden;
+    transition: background .25s ease;
   }
   .step-tab:last-child { border-right: none; }
   .step-tab[data-step="1"] { --step-color: var(--accent); }
   .step-tab[data-step="2"] { --step-color: var(--teal); }
   .step-tab[data-step="3"] { --step-color: var(--gold); }
   .step-tab[data-step="4"] { --step-color: var(--pink); }
-  .step-num { font-family: var(--font-mono); font-size: 0.76rem; color: color-mix(in oklab, var(--step-color) 65%, var(--muted)); }
-  .step-label { font-size: 0.86rem; font-weight: 700; color: var(--ink-soft); }
-  .step-tab.active { color: var(--step-color); background: color-mix(in oklab, var(--step-color) 12%, transparent); }
-  .step-tab.active .step-num { color: var(--step-color); }
+  .step-badge {
+    flex-shrink: 0; width: 26px; height: 26px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-mono); font-size: 0.72rem; font-weight: 700;
+    color: var(--step-color);
+    background: color-mix(in oklab, var(--step-color) 16%, transparent);
+    border: 1.5px solid color-mix(in oklab, var(--step-color) 45%, transparent);
+    transition: all .25s ease;
+  }
+  .step-label-group { display: flex; flex-direction: column; gap: 1px; min-width: 0; }
+  .step-label { font-size: 0.86rem; font-weight: 700; color: var(--ink-soft); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .step-tab.active { color: var(--step-color); background: color-mix(in oklab, var(--step-color) 16%, transparent); }
+  .step-tab.active .step-badge { background: var(--step-color); border-color: var(--step-color); color: var(--accent-ink); box-shadow: 0 0 0 4px color-mix(in oklab, var(--step-color) 20%, transparent); }
   .step-tab.active .step-label { color: var(--ink); }
   .step-tab.active::after {
-    content: ""; position: absolute; left: 0; right: 0; bottom: -1px; height: 3px;
+    content: ""; position: absolute; left: 0; right: 0; bottom: -1px; height: 4px;
     background: var(--step-color);
-    box-shadow: 0 0 10px color-mix(in oklab, var(--step-color) 55%, transparent);
+    box-shadow: 0 0 12px color-mix(in oklab, var(--step-color) 65%, transparent);
   }
   .step-tab:hover .step-label { color: var(--step-color); }
   .step-tab:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+
+  .step-tab[data-step="4"]:not(.active) { animation: nudge-pulse 2.6s ease-in-out infinite; }
+  .step-tab[data-step="4"]:not(.active) .step-badge { animation: nudge-badge 2.6s ease-in-out infinite; }
+  @keyframes nudge-pulse {
+    0%, 100% { background: color-mix(in oklab, var(--step-color) 6%, transparent); }
+    50% { background: color-mix(in oklab, var(--step-color) 22%, transparent); }
+  }
+  @keyframes nudge-badge {
+    0%, 100% { box-shadow: 0 0 0 0 color-mix(in oklab, var(--step-color) 45%, transparent); }
+    50% { box-shadow: 0 0 0 6px color-mix(in oklab, var(--step-color) 0%, transparent); }
+  }
+  .nudge-arrow {
+    margin-left: auto; flex-shrink: 0; font-weight: 800; color: var(--step-color);
+    animation: nudge-arrow-bounce 1.4s ease-in-out infinite;
+  }
+  .step-tab.active .nudge-arrow { display: none; }
+  @keyframes nudge-arrow-bounce {
+    0%, 100% { transform: translateX(0); opacity: .55; }
+    50% { transform: translateX(4px); opacity: 1; }
+  }
 
   .panels { position: relative; }
   .panel { display: none; padding: 36px 32px 42px; }
@@ -919,20 +949,21 @@
     </div>
     <div class="stepper" role="tablist" aria-label="Étapes de la démo">
       <button class="step-tab active" data-step="1" role="tab" aria-selected="true">
-        <span class="step-num">01</span>
-        <span class="step-label">Connexion</span>
+        <span class="step-badge">01</span>
+        <span class="step-label-group"><span class="step-label">Connexion</span></span>
       </button>
       <button class="step-tab" data-step="2" role="tab" aria-selected="false">
-        <span class="step-num">02</span>
-        <span class="step-label">Diagnostic</span>
+        <span class="step-badge">02</span>
+        <span class="step-label-group"><span class="step-label">Diagnostic</span></span>
       </button>
       <button class="step-tab" data-step="3" role="tab" aria-selected="false">
-        <span class="step-num">03</span>
-        <span class="step-label">Économies détectées</span>
+        <span class="step-badge">03</span>
+        <span class="step-label-group"><span class="step-label">Économies détectées</span></span>
       </button>
       <button class="step-tab" data-step="4" role="tab" aria-selected="false">
-        <span class="step-num">04</span>
-        <span class="step-label">Bilan</span>
+        <span class="step-badge">04</span>
+        <span class="step-label-group"><span class="step-label">Nos recommandations</span></span>
+        <span class="nudge-arrow" aria-hidden="true">→</span>
       </button>
     </div>
 
