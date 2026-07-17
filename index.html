@@ -1,0 +1,1534 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Optimus — payez le juste prix</title>
+<meta name="description" content="Démo visuelle d'une application de cost killing pour particuliers et entreprises.">
+</head>
+<body>
+<style>
+  :root {
+    color-scheme: light;
+    --bg: #ffffff;
+    --bg-soft: #f6f6fb;
+    --surface: #ffffff;
+    --surface-2: #f7f7fc;
+    --surface-hover: #f1f1fa;
+    --border: #e7e7f2;
+    --border-strong: #d6d6ea;
+    --ink: #0b0e27;
+    --ink-soft: #4d5372;
+    --muted: #767c9c;
+
+    --accent: #6355ff;
+    --accent-strong: #4b3dfd;
+    --accent-ink: #ffffff;
+    --pink: #ff5da2;
+    --gold: #ffb020;
+    --teal: #0d9184;
+    --coral: #d84343;
+
+    --shadow: rgba(28, 24, 68, 0.10);
+    --shadow-strong: rgba(28, 24, 68, 0.18);
+    --glow: rgba(99, 85, 255, 0.32);
+    --glow-soft: rgba(99, 85, 255, 0.12);
+
+    --mesh:
+      radial-gradient(1000px 620px at 6% 8%, #d6c8ff 0%, transparent 58%),
+      radial-gradient(760px 620px at 52% -6%, #ffc3e4 0%, transparent 55%),
+      radial-gradient(900px 720px at 92% 26%, #ffdba8 0%, transparent 58%),
+      linear-gradient(150deg, #ede8ff 0%, #fdeef1 48%, #fff4e2 100%);
+
+    --viz-surface: #fcfcfb;
+    --viz-ink: #0b0b0b;
+    --viz-ink-2: #52514e;
+    --viz-muted: #898781;
+    --viz-grid: #e1e0d9;
+    --viz-cat-1: #2a78d6;
+    --viz-cat-2: #008300;
+    --viz-cat-3: #e87ba4;
+    --viz-cat-4: #eda100;
+    --viz-cat-5: #1baf7a;
+    --viz-cat-6: #eb6834;
+
+    --font-display: -apple-system, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    --font-mono: ui-monospace, "SF Mono", "Roboto Mono", "JetBrains Mono", Menlo, Consolas, monospace;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:where(:not([data-theme="light"])) {
+      color-scheme: dark;
+      --bg: #0a0b16;
+      --bg-soft: #0f1120;
+      --surface: #12142a;
+      --surface-2: #171933;
+      --surface-hover: #1b1e3c;
+      --border: rgba(255,255,255,0.10);
+      --border-strong: rgba(255,255,255,0.20);
+      --ink: #f4f4fb;
+      --ink-soft: #b7bad6;
+      --muted: #8489ac;
+
+      --accent: #8f7dff;
+      --accent-strong: #7a63ff;
+      --accent-ink: #14102f;
+      --pink: #ff7db8;
+      --gold: #ffc861;
+      --teal: #35c9b8;
+      --coral: #ff8a7a;
+
+      --shadow: rgba(0, 0, 0, 0.45);
+      --shadow-strong: rgba(0, 0, 0, 0.6);
+      --glow: rgba(143, 125, 255, 0.35);
+      --glow-soft: rgba(143, 125, 255, 0.14);
+
+      --mesh:
+        radial-gradient(1000px 620px at 6% 8%, #4a3a9e 0%, transparent 58%),
+        radial-gradient(760px 620px at 52% -6%, #a13c86 0%, transparent 55%),
+        radial-gradient(900px 720px at 92% 26%, #a4661f 0%, transparent 58%),
+        linear-gradient(150deg, #150f2c 0%, #24122a 48%, #221507 100%);
+
+      --viz-surface: #1a1a19;
+      --viz-ink: #ffffff;
+      --viz-ink-2: #c3c2b7;
+      --viz-muted: #898781;
+      --viz-grid: #2c2c2a;
+      --viz-cat-1: #3987e5;
+      --viz-cat-2: #008300;
+      --viz-cat-3: #d55181;
+      --viz-cat-4: #c98500;
+      --viz-cat-5: #199e70;
+      --viz-cat-6: #d95926;
+    }
+  }
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --bg: #0a0b16;
+    --bg-soft: #0f1120;
+    --surface: #12142a;
+    --surface-2: #171933;
+    --surface-hover: #1b1e3c;
+    --border: rgba(255,255,255,0.10);
+    --border-strong: rgba(255,255,255,0.20);
+    --ink: #f4f4fb;
+    --ink-soft: #b7bad6;
+    --muted: #8489ac;
+
+    --accent: #8f7dff;
+    --accent-strong: #7a63ff;
+    --accent-ink: #14102f;
+    --pink: #ff7db8;
+    --gold: #ffc861;
+    --teal: #35c9b8;
+    --coral: #ff8a7a;
+
+    --shadow: rgba(0, 0, 0, 0.45);
+    --shadow-strong: rgba(0, 0, 0, 0.6);
+    --glow: rgba(143, 125, 255, 0.35);
+    --glow-soft: rgba(143, 125, 255, 0.14);
+
+    --mesh:
+      radial-gradient(1000px 620px at 6% 8%, #4a3a9e 0%, transparent 58%),
+      radial-gradient(760px 620px at 52% -6%, #a13c86 0%, transparent 55%),
+      radial-gradient(900px 720px at 92% 26%, #a4661f 0%, transparent 58%),
+      linear-gradient(150deg, #150f2c 0%, #24122a 48%, #221507 100%);
+
+    --viz-surface: #1a1a19;
+    --viz-ink: #ffffff;
+    --viz-ink-2: #c3c2b7;
+    --viz-muted: #898781;
+    --viz-grid: #2c2c2a;
+    --viz-cat-1: #3987e5;
+    --viz-cat-2: #008300;
+    --viz-cat-3: #d55181;
+    --viz-cat-4: #c98500;
+    --viz-cat-5: #199e70;
+    --viz-cat-6: #d95926;
+  }
+  :root[data-theme="light"] {
+    color-scheme: light;
+    --bg: #ffffff;
+    --bg-soft: #f6f6fb;
+    --surface: #ffffff;
+    --surface-2: #f7f7fc;
+    --surface-hover: #f1f1fa;
+    --border: #e7e7f2;
+    --border-strong: #d6d6ea;
+    --ink: #0b0e27;
+    --ink-soft: #4d5372;
+    --muted: #767c9c;
+
+    --accent: #6355ff;
+    --accent-strong: #4b3dfd;
+    --accent-ink: #ffffff;
+    --pink: #ff5da2;
+    --gold: #ffb020;
+    --teal: #0d9184;
+    --coral: #d84343;
+
+    --shadow: rgba(28, 24, 68, 0.10);
+    --shadow-strong: rgba(28, 24, 68, 0.18);
+    --glow: rgba(99, 85, 255, 0.32);
+    --glow-soft: rgba(99, 85, 255, 0.12);
+
+    --mesh:
+      radial-gradient(1000px 620px at 6% 8%, #d6c8ff 0%, transparent 58%),
+      radial-gradient(760px 620px at 52% -6%, #ffc3e4 0%, transparent 55%),
+      radial-gradient(900px 720px at 92% 26%, #ffdba8 0%, transparent 58%),
+      linear-gradient(150deg, #ede8ff 0%, #fdeef1 48%, #fff4e2 100%);
+
+    --viz-surface: #fcfcfb;
+    --viz-ink: #0b0b0b;
+    --viz-ink-2: #52514e;
+    --viz-muted: #898781;
+    --viz-grid: #e1e0d9;
+    --viz-cat-1: #2a78d6;
+    --viz-cat-2: #008300;
+    --viz-cat-3: #e87ba4;
+    --viz-cat-4: #eda100;
+    --viz-cat-5: #1baf7a;
+    --viz-cat-6: #eb6834;
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    * { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
+  }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--font-display);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    position: relative;
+  }
+
+  a { color: inherit; }
+  button { font-family: inherit; }
+
+  .wrap { max-width: 1120px; margin: 0 auto; padding: 0 28px; }
+
+  ::selection { background: var(--accent); color: var(--accent-ink); }
+
+  /* ---------- topbar ---------- */
+  .topbar {
+    position: sticky; top: 0; z-index: 40;
+    background: color-mix(in oklab, var(--bg) 85%, transparent);
+    backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--border);
+  }
+  .topbar-inner {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 16px 28px; max-width: 1120px; margin: 0 auto; gap: 20px;
+  }
+  .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+  .brand-word {
+    font-weight: 800; font-size: 1.2rem; letter-spacing: -0.01em; color: var(--ink);
+  }
+  .nav-links { display: flex; align-items: center; gap: 26px; margin-right: auto; margin-left: 34px; }
+  .nav-links a {
+    font-size: 0.9rem; font-weight: 600; color: var(--ink-soft); text-decoration: none;
+    transition: color .2s ease;
+  }
+  .nav-links a:hover { color: var(--ink); }
+  .nav-right { display: flex; align-items: center; gap: 14px; }
+  .nav-cta {
+    display: inline-flex; align-items: center; padding: 10px 20px; border-radius: 999px;
+    background: var(--ink); color: var(--bg); font-size: 0.86rem; font-weight: 700;
+    text-decoration: none; transition: transform .15s ease, box-shadow .2s ease;
+  }
+  .nav-cta:hover { transform: translateY(-1px); box-shadow: 0 10px 22px -10px var(--shadow-strong); }
+
+  .theme-toggle {
+    display: flex; align-items: center; justify-content: center;
+    width: 38px; height: 38px; border-radius: 999px; flex-shrink: 0;
+    border: 1px solid var(--border); background: var(--surface-2); color: var(--ink);
+    cursor: pointer; transition: border-color .2s ease, background .2s ease, transform .15s ease;
+  }
+  .theme-toggle:hover { border-color: var(--border-strong); background: var(--surface-hover); transform: translateY(-1px); }
+  .theme-toggle:active { transform: translateY(0) scale(0.95); }
+  .theme-toggle svg { width: 18px; height: 18px; display: block; }
+  .theme-toggle:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  .mode-toggle {
+    position: relative; display: inline-flex;
+    background: var(--surface-2); border: 1px solid var(--border);
+    border-radius: 999px; padding: 3px; gap: 2px;
+  }
+  .mode-toggle button {
+    position: relative; z-index: 1; border: none; background: transparent;
+    color: var(--ink-soft); font-size: 0.8rem; font-weight: 700;
+    padding: 7px 16px; border-radius: 999px; cursor: pointer;
+    transition: color 0.25s ease;
+  }
+  .mode-toggle button.active { color: var(--accent-ink); }
+  .mode-toggle .thumb {
+    position: absolute; top: 3px; bottom: 3px; left: 3px;
+    width: calc(50% - 3px);
+    background: linear-gradient(135deg, var(--accent), var(--pink));
+    border-radius: 999px;
+    box-shadow: 0 4px 14px -4px var(--glow);
+    transition: transform 0.3s cubic-bezier(.4,0,.2,1);
+  }
+  .mode-toggle[data-mode="entreprise"] .thumb { transform: translateX(100%); }
+
+  /* ---------- hero ---------- */
+  .hero { position: relative; overflow: hidden; background-image: var(--mesh); }
+  .hero-inner {
+    position: relative; z-index: 1; padding: 76px 0 40px;
+    display: grid; grid-template-columns: 1.05fr 0.95fr; gap: 40px; align-items: center;
+  }
+  .hero-trust {
+    position: relative; z-index: 1;
+    display: flex; align-items: center; justify-content: flex-start; flex-wrap: wrap;
+    gap: 8px 10px; text-align: left;
+    padding: 16px 0 28px; margin-top: 4px; border-top: 1px solid color-mix(in oklab, var(--ink) 12%, transparent);
+    font-size: 0.78rem; font-weight: 700; color: var(--accent-strong);
+  }
+  .hero-trust-dot { color: color-mix(in oklab, var(--accent-strong) 45%, transparent); }
+  .flag-fr-label { display: inline-flex; align-items: center; gap: 6px; }
+  .flag-fr { border-radius: 2px; box-shadow: 0 0 0 1px color-mix(in oklab, var(--accent-strong) 25%, transparent); flex-shrink: 0; }
+  .status-chip {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--ink);
+    background: color-mix(in oklab, var(--bg) 78%, transparent); border: 1px solid var(--border);
+    backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+    padding: 7px 14px 7px 10px; border-radius: 999px; margin: 0 0 24px;
+  }
+  .status-dot {
+    width: 7px; height: 7px; border-radius: 50%;
+    background: var(--accent); box-shadow: 0 0 0 3px var(--glow-soft);
+    animation: pulse 2.2s ease-in-out infinite;
+  }
+  @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: .45; } }
+
+  h1.headline {
+    font-weight: 800; font-size: clamp(2.5rem, 4.4vw, 3.7rem);
+    line-height: 1.03; letter-spacing: -0.03em; color: var(--ink);
+    margin: 0 0 22px; text-wrap: balance; max-width: 13ch;
+  }
+  h1.headline .hl { color: var(--accent-strong); }
+  .lede {
+    font-size: 1.1rem; color: var(--ink-soft); max-width: 46ch; margin: 0 0 32px;
+    font-weight: 400;
+  }
+
+  .hero-actions { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    border-radius: 11px; padding: 14px 24px; font-size: 0.94rem; font-weight: 700;
+    cursor: pointer; border: 1px solid transparent;
+    transition: transform 0.15s ease, box-shadow .25s ease, border-color .2s ease, background .2s ease;
+  }
+  .btn:active { transform: translateY(1px) scale(0.99); }
+  .btn-primary {
+    background: linear-gradient(135deg, var(--accent), var(--accent-strong));
+    color: var(--accent-ink);
+    box-shadow: 0 12px 26px -12px var(--glow);
+  }
+  .btn-primary:hover { box-shadow: 0 16px 32px -10px var(--glow); transform: translateY(-1px); }
+  .btn-ghost { background: var(--surface); color: var(--ink); border-color: var(--border-strong); }
+  .btn-ghost:hover { border-color: var(--ink); background: var(--surface-hover); }
+  .btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  /* floating mockup composition */
+  .hero-visual { position: relative; min-height: 460px; }
+  .mock-card {
+    position: absolute; background: var(--surface); border-radius: 20px;
+    box-shadow: 0 30px 60px -20px var(--shadow-strong), 0 0 0 1px var(--border);
+    padding: 20px;
+  }
+  .mock-pay {
+    width: 240px; top: 10px; left: 10px; z-index: 2;
+    animation: float-pay 6s ease-in-out infinite;
+  }
+  @keyframes float-pay {
+    0%, 100% { transform: rotate(-6deg) translateY(0); }
+    50% { transform: rotate(-6deg) translateY(-12px); }
+  }
+  .mock-pay-top { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
+  .mock-avatar {
+    width: 34px; height: 34px; border-radius: 10px; display: flex; align-items: center; justify-content: center;
+    background: linear-gradient(135deg, var(--gold), var(--pink)); font-size: 1rem;
+  }
+  .mock-pay-title { font-size: 0.9rem; font-weight: 700; color: var(--ink); }
+  .mock-pay-sub { font-size: 0.74rem; color: var(--muted); }
+  .mock-pay-price { font-size: 1.9rem; font-weight: 800; color: var(--ink); font-variant-numeric: tabular-nums; }
+  .mock-pay-price span { font-size: 0.6em; font-weight: 600; color: var(--muted); }
+  .mock-pay-old { font-size: 0.76rem; color: var(--muted); text-decoration: line-through; margin: 2px 0 14px; }
+  .mock-pay-btn {
+    width: 100%; border: none; border-radius: 10px; padding: 11px;
+    background: var(--ink); color: var(--bg); font-weight: 700; font-size: 0.84rem; cursor: default;
+  }
+  .mock-dash {
+    width: 270px; top: 260px; left: 190px; z-index: 1;
+    animation: float-dash 7s ease-in-out infinite;
+    animation-delay: -2.3s;
+  }
+  @keyframes float-dash {
+    0%, 100% { transform: rotate(4deg) translateY(0); }
+    50% { transform: rotate(4deg) translateY(-14px); }
+  }
+  .mock-dash-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+  .mock-dash-head span:first-child { font-size: 0.78rem; color: var(--muted); font-weight: 600; }
+  .mock-dash-badge {
+    font-size: 0.7rem; font-weight: 800; color: var(--teal);
+    background: color-mix(in oklab, var(--teal) 16%, transparent); padding: 3px 8px; border-radius: 999px;
+  }
+  .mock-dash-num { font-size: 1.7rem; font-weight: 800; color: var(--ink); font-variant-numeric: tabular-nums; margin-bottom: 10px; }
+  .mock-spark { width: 100%; height: 40px; display: block; margin-bottom: 12px; }
+  .mock-spark polyline { fill: none; stroke: var(--accent); stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+  .mock-dash-foot { display: flex; justify-content: space-between; font-size: 0.76rem; padding-top: 12px; border-top: 1px solid var(--border); }
+  .mock-dash-foot span:first-child { color: var(--muted); }
+  .mock-dash-foot span:last-child { color: var(--ink); font-weight: 700; font-variant-numeric: tabular-nums; }
+
+  .bento { display: grid; grid-template-columns: 1.25fr 1fr 1fr 1fr; gap: 14px; padding: 54px 0; align-items: stretch; }
+  .bento-card {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 16px;
+    padding: 22px 24px; position: relative; overflow: hidden;
+    box-shadow: 0 2px 0 var(--border);
+    display: flex; flex-direction: column;
+    transition: transform .25s ease, border-color .25s ease, box-shadow .25s ease;
+  }
+  .bento-card:hover { transform: translateY(-2px); border-color: var(--border-strong); box-shadow: 0 14px 30px -18px var(--shadow-strong); }
+  .bento-feature { justify-content: space-between; }
+  .bento-label {
+    font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--muted); margin-bottom: 14px;
+  }
+  .bento-feature .num {
+    font-weight: 800;
+    font-size: clamp(2.4rem, 5vw, 3.2rem); color: var(--accent-strong);
+    font-variant-numeric: tabular-nums; line-height: 1;
+  }
+  .bento-feature .sub { color: var(--ink-soft); font-size: 0.9rem; margin-top: 12px; max-width: 30ch; }
+  .bento-mini { justify-content: flex-start; }
+  .bento-mini .num { font-weight: 800; font-size: 1.7rem; font-variant-numeric: tabular-nums; }
+  .bento-mini .sub { color: var(--ink-soft); font-size: 0.84rem; margin-top: 8px; }
+
+  .bento-score { justify-content: flex-start; }
+  .score-stars { font-size: 1.3rem; letter-spacing: 2px; color: var(--border-strong); }
+  .score-stars .filled { color: var(--gold); }
+  .score-tag {
+    display: inline-flex; align-items: center; gap: 6px; margin-top: 10px;
+    font-size: 0.8rem; font-weight: 800; padding: 5px 11px; border-radius: 999px; width: fit-content;
+  }
+  .score-tag.level-improvable { background: color-mix(in oklab, var(--gold) 18%, transparent); color: color-mix(in oklab, var(--gold) 70%, var(--ink)); }
+  .score-tag.level-optimize { background: color-mix(in oklab, var(--coral) 16%, transparent); color: var(--coral); }
+  .score-tag.level-neutral { background: color-mix(in oklab, var(--accent) 14%, transparent); color: var(--accent-strong); }
+  .score-tag.level-pending { background: var(--surface-2); color: var(--muted); border: 1px dashed var(--border-strong); }
+  .bento-score .sub { color: var(--ink-soft); font-size: 0.84rem; margin-top: 10px; }
+
+  /* ---------- demo section ---------- */
+  #demo { padding: 30px 0 100px; }
+  .section-head { margin-bottom: 30px; }
+  .section-head .eyebrow {
+    font-size: 0.72rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--accent); margin: 0 0 10px;
+  }
+  .section-head h2 { font-weight: 800; font-size: 1.8rem; margin: 0 0 8px; letter-spacing: -0.01em; }
+  .section-head p { color: var(--ink-soft); margin: 0; max-width: 60ch; }
+
+  .device-frame {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 20px;
+    box-shadow: 0 40px 80px -36px var(--shadow-strong);
+    overflow: hidden;
+  }
+  .device-chrome {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 12px 18px; border-bottom: 1px solid var(--border);
+    background: var(--surface-2);
+  }
+  .chrome-status { display: flex; align-items: center; gap: 8px; font-size: 0.76rem; color: var(--ink-soft); font-weight: 600; }
+  .chrome-status .status-dot { animation: none; box-shadow: 0 0 0 3px var(--glow-soft); }
+  .chrome-id { font-family: var(--font-mono); font-size: 0.72rem; color: var(--muted); }
+
+  .stepper { display: grid; grid-template-columns: repeat(4, 1fr); border-bottom: 1px solid var(--border); }
+  .step-tab {
+    display: flex; flex-direction: column; gap: 5px; text-align: left;
+    padding: 16px 18px; background: transparent; border: none; border-right: 1px solid var(--border);
+    cursor: pointer; position: relative; color: var(--muted);
+    transition: background .2s ease;
+  }
+  .step-tab:last-child { border-right: none; }
+  .step-tab[data-step="1"] { --step-color: var(--accent); }
+  .step-tab[data-step="2"] { --step-color: var(--teal); }
+  .step-tab[data-step="3"] { --step-color: var(--gold); }
+  .step-tab[data-step="4"] { --step-color: var(--pink); }
+  .step-num { font-family: var(--font-mono); font-size: 0.76rem; color: color-mix(in oklab, var(--step-color) 65%, var(--muted)); }
+  .step-label { font-size: 0.86rem; font-weight: 700; color: var(--ink-soft); }
+  .step-tab.active { color: var(--step-color); background: color-mix(in oklab, var(--step-color) 12%, transparent); }
+  .step-tab.active .step-num { color: var(--step-color); }
+  .step-tab.active .step-label { color: var(--ink); }
+  .step-tab.active::after {
+    content: ""; position: absolute; left: 0; right: 0; bottom: -1px; height: 3px;
+    background: var(--step-color);
+    box-shadow: 0 0 10px color-mix(in oklab, var(--step-color) 55%, transparent);
+  }
+  .step-tab:hover .step-label { color: var(--step-color); }
+  .step-tab:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+
+  .panels { position: relative; }
+  .panel { display: none; padding: 36px 32px 42px; }
+  .panel.active { display: block; animation: rise .45s cubic-bezier(.2,.8,.2,1); }
+  @keyframes rise { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+  .panel h3 { font-weight: 800; font-size: 1.3rem; margin: 0 0 6px; letter-spacing: -0.01em; }
+  .panel .panel-sub { color: var(--ink-soft); margin: 0 0 28px; max-width: 60ch; }
+
+  /* step 1 */
+  .connect-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .connect-card {
+    border: 1px solid var(--border); border-radius: 14px; padding: 24px;
+    background: var(--surface); backdrop-filter: blur(22px); -webkit-backdrop-filter: blur(22px);
+    transition: border-color .2s ease, transform .2s ease, box-shadow .2s ease;
+  }
+  .connect-card:hover { border-color: var(--border-strong); transform: translateY(-3px); box-shadow: 0 16px 30px -18px rgba(0,0,0,0.5); }
+  .connect-icon {
+    width: 40px; height: 40px; border-radius: 11px;
+    background: linear-gradient(155deg, var(--accent-strong), var(--accent));
+    color: var(--accent-ink);
+    display: flex; align-items: center; justify-content: center; margin-bottom: 16px;
+    font-size: 1.05rem;
+  }
+  .connect-card h4 { margin: 0 0 8px; font-size: 1.02rem; font-weight: 700; }
+  .connect-card p { margin: 0 0 14px; color: var(--ink-soft); font-size: 0.92rem; }
+  .connect-meta {
+    font-family: var(--font-mono); font-size: 0.72rem; color: var(--muted);
+    text-transform: uppercase; letter-spacing: 0.04em;
+  }
+  .connect-card button {
+    margin-top: 18px; width: 100%; border: 1px solid var(--border-strong);
+    background: transparent; color: var(--ink); border-radius: 9px; padding: 10px;
+    font-weight: 700; font-size: 0.88rem; cursor: pointer; transition: all .2s ease;
+  }
+  .connect-card button:hover { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+  .privacy-note {
+    margin-top: 22px; font-size: 0.82rem; color: var(--muted);
+    display: flex; gap: 9px; align-items: flex-start;
+  }
+
+  /* step 2 */
+  .analyse-top { display: flex; justify-content: space-between; align-items: flex-end; gap: 20px; margin-bottom: 26px; flex-wrap: wrap; }
+  .total-figure .label { font-size: 0.76rem; color: var(--muted); text-transform: uppercase; letter-spacing: .08em; font-weight: 700; }
+  .total-figure .num { font-family: var(--font-mono); font-weight: 700; font-size: 2.3rem; font-variant-numeric: tabular-nums; }
+  .table-toggle {
+    background: var(--surface); border: 1px solid var(--border); color: var(--ink);
+    font-size: 0.82rem; font-weight: 700; cursor: pointer; padding: 8px 14px; border-radius: 8px;
+    transition: border-color .2s ease;
+  }
+  .table-toggle:hover { border-color: var(--accent); color: var(--accent); }
+
+  .viz-root { --_s: var(--viz-surface); }
+  .chart-panel {
+    background: var(--viz-surface); border-radius: 14px; padding: 20px 22px;
+    border: 1px solid var(--border);
+  }
+
+  .legend { display: flex; flex-wrap: wrap; gap: 14px 20px; margin-bottom: 22px; }
+  .legend-item { display: flex; align-items: center; gap: 7px; font-size: 0.8rem; color: var(--viz-ink-2); }
+  .legend-swatch { width: 10px; height: 10px; border-radius: 3px; }
+  .legend-swatch.eco { background: var(--accent); box-shadow: 0 0 8px -1px var(--glow); }
+
+  .bars { display: flex; flex-direction: column; gap: 22px; }
+  .cat-block + .cat-block { padding-top: 20px; border-top: 1px solid var(--viz-grid); }
+  .cat-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; margin-bottom: 8px; }
+  .cat-head .cat-name { font-size: 0.88rem; color: var(--viz-ink); font-weight: 700; }
+  .cat-head .cat-amount { font-family: var(--font-mono); font-size: 0.86rem; font-variant-numeric: tabular-nums; color: var(--viz-ink); font-weight: 700; }
+  .cat-head .cat-amount.empty { color: var(--viz-muted); font-weight: 500; }
+  .cat-head .cat-pct { color: var(--viz-ink-2); font-weight: 500; }
+
+  .bar-track { background: rgba(255,255,255,0.06); border-radius: 7px; height: 26px; position: relative; overflow: hidden; }
+  .bar-fill {
+    display: block; height: 100%; width: 0; border-radius: 7px; cursor: pointer;
+    transition: width .8s cubic-bezier(.16,1,.3,1);
+  }
+  .bar-fill.eco-main-fill {
+    background: linear-gradient(90deg, var(--accent-strong), var(--accent));
+    box-shadow: 0 0 16px -2px var(--glow);
+  }
+  .bar-pct {
+    position: absolute; right: 8px; top: 50%; transform: translateY(-50%);
+    font-family: var(--font-mono); font-size: 0.76rem; font-weight: 800;
+    color: #fff; background: rgba(0,0,0,0.42); padding: 2px 8px; border-radius: 5px;
+    pointer-events: none; letter-spacing: .01em; font-variant-numeric: tabular-nums;
+    z-index: 2;
+  }
+
+  .eco-row { display: grid; grid-template-columns: 108px 1fr 168px; align-items: center; gap: 10px; margin-top: 8px; }
+  .eco-row .eco-label { font-size: 0.72rem; text-transform: uppercase; letter-spacing: .05em; color: var(--viz-muted); font-weight: 700; }
+  .eco-track { background: rgba(255,255,255,0.06); border-radius: 5px; height: 8px; position: relative; overflow: hidden; }
+  .eco-fill {
+    display: block; height: 100%; width: 0; border-radius: 5px; cursor: pointer;
+    background: linear-gradient(90deg, var(--accent-strong), var(--accent));
+    box-shadow: 0 0 10px -1px var(--glow);
+    transition: width .8s cubic-bezier(.16,1,.3,1);
+  }
+  .eco-row .eco-amount { font-family: var(--font-mono); font-size: 0.78rem; font-variant-numeric: tabular-nums; color: var(--accent); font-weight: 700; text-align: right; }
+  .eco-row .eco-amount.empty { color: var(--viz-muted); font-weight: 500; }
+
+  .data-table { display: none; width: 100%; border-collapse: collapse; font-size: 0.86rem; margin-top: 4px; }
+  .data-table.visible { display: table; }
+  .data-table th, .data-table td { text-align: left; padding: 10px 10px; border-bottom: 1px solid var(--viz-grid); color: var(--viz-ink); }
+  .data-table th { color: var(--viz-muted); font-weight: 700; text-transform: uppercase; font-size: 0.7rem; letter-spacing: .05em; }
+  .data-table td.num, .data-table th.num { text-align: right; font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+
+  .chart-tooltip {
+    position: fixed; pointer-events: none;
+    background: var(--ink); color: var(--bg);
+    padding: 7px 11px; border-radius: 8px; font-family: var(--font-mono);
+    font-size: 0.78rem; font-weight: 700; z-index: 100; opacity: 0;
+    transition: opacity .12s ease; transform: translate(-50%, -125%); white-space: nowrap;
+  }
+  .chart-tooltip.visible { opacity: 1; }
+
+  /* step 3 */
+  .sort-row { display: flex; align-items: center; gap: 10px; margin-bottom: 22px; }
+  .sort-row span { font-size: 0.8rem; color: var(--muted); font-weight: 600; }
+  .chip-btn {
+    border: 1px solid var(--border); background: var(--surface); color: var(--ink-soft);
+    border-radius: 999px; padding: 7px 15px; font-size: 0.8rem; font-weight: 700; cursor: pointer;
+    transition: all .2s ease;
+  }
+  .chip-btn.active { background: linear-gradient(155deg, var(--accent-strong), var(--accent)); border-color: transparent; color: var(--accent-ink); }
+
+  .opp-list { display: flex; flex-direction: column; gap: 14px; }
+  .opp-card {
+    border: 1px solid var(--border); border-radius: 16px; padding: 20px 22px;
+    display: grid; grid-template-columns: 1fr auto; gap: 16px; align-items: center;
+    background: var(--surface); backdrop-filter: blur(22px); -webkit-backdrop-filter: blur(22px);
+    transition: border-color .2s ease, transform .2s ease;
+  }
+  .opp-card.important { border-color: color-mix(in oklab, var(--coral) 45%, var(--border)); box-shadow: 0 0 0 1px color-mix(in oklab, var(--coral) 20%, transparent); }
+  .opp-card:hover { border-color: var(--border-strong); transform: translateY(-2px); }
+  .opp-cat-row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+  .opp-cat { font-size: 0.72rem; text-transform: uppercase; letter-spacing: .07em; color: var(--muted); font-weight: 800; margin-bottom: 0; }
+  .opp-priority {
+    display: inline-flex; align-items: center; gap: 5px; font-size: 0.68rem; font-weight: 800;
+    text-transform: uppercase; letter-spacing: .04em; color: var(--coral);
+    background: color-mix(in oklab, var(--coral) 15%, transparent); padding: 3px 9px; border-radius: 999px;
+  }
+  .opp-compare { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+  .opp-side { display: flex; align-items: center; gap: 9px; }
+  .badge {
+    width: 26px; height: 26px; border-radius: 8px; font-size: 0.7rem; font-weight: 800;
+    display: flex; align-items: center; justify-content: center; font-family: var(--font-mono);
+  }
+  .badge-current { background: color-mix(in oklab, var(--coral) 20%, transparent); color: var(--coral); }
+  .badge-reco { background: color-mix(in oklab, var(--teal) 20%, transparent); color: var(--teal); }
+  .opp-provider { font-size: 0.9rem; color: var(--ink); }
+  .opp-price { font-family: var(--font-mono); font-variant-numeric: tabular-nums; font-weight: 700; }
+  .opp-price.strike { color: var(--muted); text-decoration: line-through; text-decoration-color: var(--coral); }
+  .opp-arrow { color: var(--accent); font-weight: 800; }
+  .opp-note { font-size: 0.82rem; color: var(--muted); margin-top: 10px; }
+  .opp-savings { text-align: right; white-space: nowrap; }
+  .opp-savings .amt {
+    font-family: var(--font-mono); font-weight: 800; font-size: 1.4rem;
+    color: var(--accent); font-variant-numeric: tabular-nums;
+    display: inline-flex; align-items: center; gap: 4px;
+  }
+  .opp-savings .per { font-size: 0.72rem; color: var(--muted); margin-top: 2px; }
+
+  /* step 4 */
+  .bilan-hero {
+    text-align: center; padding: 20px 0 36px; border-bottom: 1px solid var(--border); margin-bottom: 30px;
+  }
+  .bilan-hero .label { font-size: 0.8rem; color: var(--muted); text-transform: uppercase; letter-spacing: .1em; margin-bottom: 14px; font-weight: 700; }
+  .bilan-hero .num {
+    font-family: var(--font-mono); font-weight: 800; font-size: clamp(3.6rem, 9vw, 6.2rem);
+    color: var(--accent); font-variant-numeric: tabular-nums; line-height: 1;
+    text-shadow: 0 0 50px var(--glow-soft);
+  }
+  .bilan-hero .num .num-suffix { font-size: 0.32em; font-weight: 700; color: var(--ink-soft); }
+  .bilan-hero .monthly {
+    margin-top: 18px; color: var(--ink); font-size: clamp(1.15rem, 2.2vw, 1.4rem); font-weight: 700;
+  }
+  .bilan-hero .monthly span {
+    font-family: var(--font-mono); font-weight: 800; color: var(--accent); font-variant-numeric: tabular-nums;
+  }
+  .bilan-hero .confort { margin-top: 8px; color: var(--muted); font-size: 0.9rem; }
+  .bilan-grid { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 30px; align-items: start; }
+  .bilan-mini { display: flex; flex-direction: column; gap: 2px; }
+  .bilan-mini-row { display: flex; justify-content: space-between; align-items: center; font-size: 0.9rem; padding: 11px 0; border-bottom: 1px solid var(--border); }
+  .bilan-mini-row .v { font-family: var(--font-mono); font-variant-numeric: tabular-nums; font-weight: 700; color: var(--accent); }
+  .bilan-side { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 24px; backdrop-filter: blur(22px); -webkit-backdrop-filter: blur(22px); }
+  .bilan-side p { color: var(--ink-soft); font-size: 0.9rem; margin: 0 0 20px; }
+  .bilan-side .btn { width: 100%; justify-content: center; margin-bottom: 10px; }
+
+  .activation-list {
+    display: none; margin-top: 28px; padding-top: 28px; border-top: 1px solid var(--border);
+  }
+  .activation-list.visible { display: block; animation: rise .45s cubic-bezier(.2,.8,.2,1); }
+  .activation-head { display: flex; align-items: baseline; justify-content: space-between; gap: 14px; margin-bottom: 18px; flex-wrap: wrap; }
+  .activation-head h4 { margin: 0; font-size: 1.05rem; font-weight: 800; }
+  .activation-head p { margin: 0; color: var(--muted); font-size: 0.86rem; }
+  .activation-rows { display: flex; flex-direction: column; gap: 12px; }
+  .activation-row {
+    display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 16px;
+    border: 1px solid var(--border); border-radius: 13px; padding: 14px 16px;
+    background: var(--surface); transition: border-color .2s ease, opacity .3s ease;
+  }
+  .activation-row.done { opacity: 0.55; }
+  .activation-row .a-cat { font-size: 0.72rem; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); font-weight: 800; margin-bottom: 4px; }
+  .activation-row .a-detail { font-size: 0.9rem; color: var(--ink); }
+  .activation-row .a-detail b { font-family: var(--font-mono); color: var(--accent); }
+  .action-btn-group { display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+  .action-btn {
+    border: 1px solid var(--border-strong); background: transparent; color: var(--ink);
+    border-radius: 9px; padding: 9px 15px; font-size: 0.82rem; font-weight: 700; cursor: pointer;
+    white-space: nowrap; transition: all .2s ease;
+  }
+  .action-btn[data-action="resilier"] { border-color: color-mix(in oklab, var(--coral) 55%, var(--border-strong)); color: var(--coral); }
+  .action-btn[data-action="resilier"]:hover, .action-btn[data-action="resilier"].primary { background: var(--coral); color: var(--bg); border-color: transparent; }
+  .action-btn[data-action="contacter"] { border-color: color-mix(in oklab, var(--teal) 55%, var(--border-strong)); color: var(--teal); }
+  .action-btn[data-action="contacter"]:hover, .action-btn[data-action="contacter"].primary { background: var(--teal); color: var(--bg); border-color: transparent; }
+  .action-btn[data-action="abonner"] { border-color: color-mix(in oklab, var(--accent) 55%, var(--border-strong)); color: var(--accent); }
+  .action-btn[data-action="abonner"]:hover, .action-btn[data-action="abonner"].primary { background: linear-gradient(155deg, var(--accent-strong), var(--accent)); color: var(--accent-ink); border-color: transparent; }
+  .action-btn.primary { box-shadow: 0 8px 20px -10px var(--glow); }
+  .action-btn:disabled { opacity: 0.5; cursor: default; box-shadow: none; background: transparent !important; color: var(--muted) !important; border-color: var(--border) !important; }
+  .action-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  .toast {
+    position: fixed; left: 50%; bottom: 26px; transform: translate(-50%, 12px);
+    background: var(--ink); color: var(--bg); padding: 12px 20px; border-radius: 10px;
+    font-size: 0.88rem; font-weight: 700; opacity: 0;
+    transition: opacity .25s ease, transform .25s ease; pointer-events: none; z-index: 200;
+  }
+  .toast.visible { opacity: 1; transform: translate(-50%, 0); }
+
+  /* ---------- partners ---------- */
+  #partners { padding: 70px 0 30px; border-top: 1px solid var(--border); }
+  .partner-group { margin-bottom: 32px; }
+  .partner-group h3 {
+    font-size: 0.74rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--muted); margin: 0 0 14px;
+  }
+  .partner-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; }
+  .partner-card {
+    border: 1px solid var(--border); border-radius: 12px; background: var(--surface);
+    padding: 16px 10px; display: flex; flex-direction: column; align-items: center; gap: 10px; text-align: center;
+    transition: border-color .2s ease, transform .2s ease, box-shadow .2s ease;
+  }
+  .partner-card:hover { border-color: var(--border-strong); transform: translateY(-2px); box-shadow: 0 10px 22px -14px var(--shadow-strong); }
+  .partner-logo {
+    width: 44px; height: 44px; border-radius: 12px; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    color: #fff; font-weight: 800; font-size: 0.82rem; letter-spacing: -0.02em;
+    box-shadow: 0 6px 14px -6px var(--shadow-strong);
+  }
+  .partner-name { font-weight: 700; font-size: 0.82rem; color: var(--ink-soft); line-height: 1.25; }
+  .partners-disclaimer {
+    font-size: 0.8rem; color: var(--muted); margin-top: 24px; max-width: 70ch;
+  }
+
+  .featured-partners { padding: 8px 0 6px; }
+  .featured-label {
+    font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--muted); text-align: center; margin-bottom: 16px;
+  }
+  .featured-grid { display: flex; justify-content: center; gap: 16px; flex-wrap: wrap; }
+  .featured-card {
+    position: relative; display: flex; align-items: center; gap: 12px;
+    border: 1px solid var(--border); border-radius: 14px; background: var(--surface);
+    padding: 12px 20px 12px 12px; box-shadow: 0 2px 0 var(--border);
+  }
+  .featured-card .partner-logo { width: 40px; height: 40px; }
+  .featured-card .partner-name { color: var(--ink); font-weight: 800; font-size: 0.86rem; }
+  .featured-stars { font-size: 0.7rem; color: var(--gold); letter-spacing: 1px; }
+
+  footer { border-top: 1px solid var(--border); padding: 36px 0 54px; }
+  footer .wrap { display: flex; justify-content: space-between; align-items: center; gap: 20px; flex-wrap: wrap; }
+  .footer-disclaimer { font-size: 0.8rem; color: var(--muted); max-width: 52ch; }
+  .footer-brand { font-weight: 800; color: var(--ink); letter-spacing: 0.02em; text-transform: uppercase; }
+
+  @media (max-width: 900px) {
+    .nav-links { display: none; }
+    .hero-inner { grid-template-columns: 1fr; padding: 48px 0 40px; }
+    .hero-visual { min-height: 400px; margin-top: 20px; }
+    .mock-pay { width: 210px; left: 0; }
+    .mock-dash { width: 230px; top: 240px; left: 150px; }
+  }
+  @media (max-width: 640px) {
+    .hero-visual { display: none; }
+  }
+  @media (max-width: 760px) {
+    .connect-grid { grid-template-columns: 1fr; }
+    .bento { grid-template-columns: 1fr; }
+    .bento-feature { grid-row: auto; }
+    .stepper { grid-template-columns: repeat(2, 1fr); }
+    .step-tab:nth-child(2) { border-right: none; }
+    .eco-row { grid-template-columns: 1fr; gap: 4px; }
+    .eco-row .eco-amount { text-align: left; }
+    .opp-card { grid-template-columns: 1fr; }
+    .opp-savings { text-align: left; }
+    .bilan-grid { grid-template-columns: 1fr; }
+    .analyse-top { flex-direction: column; align-items: flex-start; }
+    .activation-row { grid-template-columns: 1fr; }
+    .action-btn-group { justify-content: flex-start; width: 100%; }
+    .action-btn { flex: 1; }
+    .partner-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (min-width: 761px) and (max-width: 1000px) {
+    .partner-grid { grid-template-columns: repeat(3, 1fr); }
+  }
+</style>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="#top">
+      <span class="brand-word">Optimus</span>
+    </a>
+    <nav class="nav-links">
+      <a href="#demo">Diagnostic</a>
+      <a href="#demo">Économies détectées</a>
+      <a href="#partners">Partenaires</a>
+    </nav>
+    <div class="nav-right">
+      <div class="mode-toggle" id="modeToggle" data-mode="particulier">
+        <span class="thumb" aria-hidden="true"></span>
+        <button type="button" data-mode="particulier" class="active">Particulier</button>
+        <button type="button" data-mode="entreprise">Entreprise</button>
+      </div>
+      <button type="button" class="theme-toggle" id="themeToggle" aria-label="Changer de thème"></button>
+      <a class="nav-cta" href="#demo">Essayer</a>
+    </div>
+  </div>
+</div>
+
+<section id="top" class="hero">
+  <div class="wrap">
+    <div class="hero-inner">
+      <div class="hero-copy">
+        <div class="status-chip"><span class="status-dot"></span>Optimiser votre budget</div>
+        <h1 class="headline"><span class="hl">Optimus</span> : payez le juste prix.</h1>
+        <p class="lede">Connectez votre compte bancaire ou déposez vos factures. Optimus scanne chaque poste de dépense et déniche, en continu, les meilleures offres du marché.</p>
+        <div class="hero-actions">
+          <button class="btn btn-primary" id="ctaStart">Lancer la démo</button>
+          <a class="btn btn-ghost" href="#demo">Voir comment ça marche</a>
+        </div>
+      </div>
+      <div class="hero-visual" aria-hidden="true">
+        <div class="mock-card mock-pay">
+          <div class="mock-pay-top">
+            <span class="mock-avatar">⚡</span>
+            <div>
+              <div class="mock-pay-title">Énergie</div>
+              <div class="mock-pay-sub">Mint Énergie · Online</div>
+            </div>
+          </div>
+          <div class="mock-pay-price">71 <span>€/mois</span></div>
+          <div class="mock-pay-old">au lieu de 89 €/mois</div>
+          <button class="mock-pay-btn" type="button" tabindex="-1">Activer l'offre</button>
+        </div>
+        <div class="mock-card mock-dash">
+          <div class="mock-dash-head">
+            <span>Aujourd'hui</span>
+            <span class="mock-dash-badge">+18 %</span>
+          </div>
+          <div class="mock-dash-num">1 284 €</div>
+          <svg class="mock-spark" viewBox="0 0 100 30" preserveAspectRatio="none">
+            <polyline points="0,26 20,20 40,22 60,10 80,14 100,4"></polyline>
+          </svg>
+          <div class="mock-dash-foot"><span>Économies cumulées</span><span>1 380 €/an</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-trust">
+      <span>🔒 100&nbsp;% RGPD</span>
+      <span class="hero-trust-dot" aria-hidden="true">•</span>
+      <span>Aucune donnée financière personnelle stockée dans nos bases sans votre accord</span>
+      <span class="hero-trust-dot" aria-hidden="true">•</span>
+      <span class="flag-fr-label">Serveurs hébergés en France <svg class="flag-fr" viewBox="0 0 3 2" width="18" height="12" aria-hidden="true"><rect width="1" height="2" x="0" fill="#0055A4"></rect><rect width="1" height="2" x="1" fill="#ffffff"></rect><rect width="1" height="2" x="2" fill="#EF4135"></rect></svg></span>
+    </div>
+  </div>
+</section>
+
+<div class="wrap featured-partners">
+  <div class="featured-label">Partenaires 5 étoiles</div>
+  <div class="featured-grid" id="featuredPartners"></div>
+</div>
+
+<div class="wrap bento">
+  <div class="bento-card bento-feature">
+    <div class="bento-label">Économie moyenne détectée</div>
+    <div>
+      <div class="num" id="heroStat" data-target="0">0&nbsp;€</div>
+      <div class="sub" id="heroStatLabel">économisés en moyenne chaque mois, sans rien changer à votre confort</div>
+    </div>
+  </div>
+  <div class="bento-card bento-score">
+    <div class="bento-label">Score de gestion budgétaire</div>
+    <div class="score-stars" id="scoreStars"></div>
+    <div class="score-tag" id="scoreTag"></div>
+    <div class="sub" id="scoreNote">Basé sur vos habitudes de dépense des 90 derniers jours.</div>
+  </div>
+  <div class="bento-card bento-mini">
+    <div class="bento-label">Mise en route</div>
+    <div class="num">3 min</div>
+    <div class="sub">pour connecter comptes ou factures</div>
+  </div>
+  <div class="bento-card bento-mini">
+    <div class="bento-label">Effort requis</div>
+    <div class="num">0</div>
+    <div class="sub">appel ou négociation à faire vous-même</div>
+  </div>
+</div>
+
+<div id="demo" class="wrap">
+  <div class="section-head">
+    <p class="eyebrow">Démonstration visuelle</p>
+    <h2>Le parcours, étape par étape</h2>
+    <p>Un aperçu du produit tel qu'un utilisateur le vivrait — de la connexion des données jusqu'au bilan d'économies.</p>
+  </div>
+
+  <div class="device-frame">
+    <div class="device-chrome">
+      <span class="chrome-status"><span class="status-dot"></span>Session de démonstration</span>
+      <span class="chrome-id">OPTIMUS · v1.0</span>
+    </div>
+    <div class="stepper" role="tablist" aria-label="Étapes de la démo">
+      <button class="step-tab active" data-step="1" role="tab" aria-selected="true">
+        <span class="step-num">01</span>
+        <span class="step-label">Connexion</span>
+      </button>
+      <button class="step-tab" data-step="2" role="tab" aria-selected="false">
+        <span class="step-num">02</span>
+        <span class="step-label">Diagnostic</span>
+      </button>
+      <button class="step-tab" data-step="3" role="tab" aria-selected="false">
+        <span class="step-num">03</span>
+        <span class="step-label">Économies détectées</span>
+      </button>
+      <button class="step-tab" data-step="4" role="tab" aria-selected="false">
+        <span class="step-num">04</span>
+        <span class="step-label">Bilan</span>
+      </button>
+    </div>
+
+    <div class="panels">
+      <!-- STEP 1 -->
+      <section class="panel active" data-panel="1">
+        <h3>Comment voulez-vous connecter vos dépenses ?</h3>
+        <p class="panel-sub">Deux façons d'importer vos données — au choix, ou les deux à la fois.</p>
+        <div class="connect-grid" id="connectGrid"></div>
+        <div class="privacy-note">
+          <span>🔒</span>
+          <span>Accès en lecture seule. Vos factures importées sont analysées et ne quittent jamais votre appareil.</span>
+        </div>
+      </section>
+
+      <!-- STEP 2 -->
+      <section class="panel" data-panel="2">
+        <h3>Vos dépenses, catégorisées automatiquement</h3>
+        <p class="panel-sub">Optimus reconnaît chaque prélèvement et facture, et les classe par poste.</p>
+
+        <div class="analyse-top">
+          <div class="total-figure">
+            <div class="label">Dépenses fixes analysées / mois</div>
+            <div class="num" id="totalFigure">0 €</div>
+          </div>
+          <button class="table-toggle" id="tableToggle">Afficher en tableau</button>
+        </div>
+
+        <div class="sort-row">
+          <span>Trier par</span>
+          <button class="chip-btn active" data-catsort="budget">Budget</button>
+          <button class="chip-btn" data-catsort="economie">Économie potentielle</button>
+        </div>
+
+        <div class="viz-root">
+          <div class="chart-panel">
+            <div class="legend" id="legend"></div>
+            <div class="bars" id="bars"></div>
+            <table class="data-table" id="dataTable">
+              <thead>
+                <tr><th>Catégorie</th><th class="num">Montant / mois</th><th class="num">Part du total</th><th class="num">Économie max</th></tr>
+              </thead>
+              <tbody id="dataTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- STEP 3 -->
+      <section class="panel" data-panel="3">
+        <h3>Des offres équivalentes, moins chères</h3>
+        <p class="panel-sub">Chaque opportunité est comparée sur une base équivalente : même consommation, mêmes garanties.</p>
+        <div class="sort-row">
+          <span>Trier par</span>
+          <button class="chip-btn active" data-sort="savings">Économie la plus élevée</button>
+          <button class="chip-btn" data-sort="category">Catégorie</button>
+        </div>
+        <div class="opp-list" id="oppList"></div>
+      </section>
+
+      <!-- STEP 4 -->
+      <section class="panel" data-panel="4">
+        <div class="bilan-hero">
+          <div class="label">Total des économies identifiées sur l'année</div>
+          <div class="num" id="bilanNum">0 €<span class="num-suffix">/an</span></div>
+          <div class="monthly" id="bilanMonthly"></div>
+          <div class="confort">sans rien changer à votre confort</div>
+        </div>
+        <div class="bilan-grid">
+          <div class="bilan-mini" id="bilanMini"></div>
+          <div class="bilan-side">
+            <p id="bilanExtra"></p>
+            <button class="btn btn-primary" id="ctaActivate">Activer mes économies</button>
+            <button class="btn btn-ghost" id="ctaReport">Télécharger le rapport</button>
+          </div>
+        </div>
+        <div class="activation-list" id="activationList">
+          <div class="activation-head">
+            <h4>Actions à lancer</h4>
+            <p>Une ligne, une action. Optimus prépare tout — vous validez.</p>
+          </div>
+          <div class="activation-rows" id="activationRows"></div>
+        </div>
+      </section>
+    </div>
+  </div>
+</div>
+
+<section id="partners" class="wrap">
+  <div class="section-head">
+    <p class="eyebrow">Réseau d'offres</p>
+    <h2>Les partenaires Optimus</h2>
+    <p>Plus de 30 fournisseurs suivis en continu à travers l'énergie, l'assurance, le télécom, la banque, le crédit et les logiciels pro — pour toujours proposer l'offre la plus juste.</p>
+  </div>
+  <div id="partnersWrap"></div>
+  <p class="partners-disclaimer">Marques citées à titre d'illustration commerciale pour cette démonstration visuelle. Aucun partenariat réel n'est établi entre Optimus et les enseignes mentionnées.</p>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-brand">Optimus</div>
+    <p class="footer-disclaimer">Démonstration visuelle — données et offres fictives, à titre d'illustration uniquement. Aucun compte bancaire réel n'est connecté ici.</p>
+  </div>
+</footer>
+
+<div class="chart-tooltip" id="chartTooltip"></div>
+<div class="toast" id="toast"></div>
+
+<script>
+(function () {
+  const MODES = {
+    particulier: {
+      heroStat: 115,
+      heroStatLabel: "économisés en moyenne chaque mois, sans rien changer à votre confort",
+      budgetScore: { stars: 3, label: "Améliorable", level: "level-improvable" },
+      connectOptions: [
+        { icon: "🏦", title: "Connecter mon compte bancaire", desc: "Agrégation sécurisée, en lecture seule, de vos comptes courants, cartes et prélèvements.", meta: "Compatible avec 300+ banques françaises", cta: "Connecter via mon espace bancaire" },
+        { icon: "📄", title: "Importer mes factures", desc: "Glissez vos factures PDF, relevés ou photos — l'analyse se fait sur votre appareil.", meta: "PDF · CSV · photo de facture", cta: "Choisir des fichiers à importer" }
+      ],
+      totalMonthly: 1284,
+      categories: [
+        { name: "Énergie", amount: 412, slot: 1 },
+        { name: "Assurances", amount: 268, slot: 2 },
+        { name: "Télécom & Internet", amount: 143, slot: 3 },
+        { name: "Abonnements", amount: 97, slot: 4 },
+        { name: "Banque & frais", amount: 64, slot: 5 },
+        { name: "Autres charges fixes", amount: 300, slot: 6 }
+      ],
+      opportunities: [
+        { cat: "Rénégociez vos crédits", catGroup: "Crédits", current: "Crédit immobilier · Taux 3,8 %", currentPrice: 890, reco: "Renégociation · Taux 3,1 %", recoPrice: 845, note: "Économie sur la durée du prêt, sans rallonger l'échéance.", action: "contacter", important: true },
+        { cat: "Énergie", catGroup: "Énergie", current: "EDF · Tarif Bleu", currentPrice: 89, reco: "Mint Énergie · Online", recoPrice: 71, note: "Même consommation, offre 100 % en ligne.", action: "abonner" },
+        { cat: "Forfait mobile", catGroup: "Télécom & Internet", current: "Orange · 40 Go", currentPrice: 39.99, reco: "Sosh · 40 Go", recoPrice: 15.99, note: "Même réseau, même enveloppe data.", action: "abonner" },
+        { cat: "Assurance auto", catGroup: "Assurances", current: "AXA", currentPrice: 52, reco: "Leocare", recoPrice: 38, note: "Formule tous risques équivalente.", action: "resilier" },
+        { cat: "Assurance habitation", catGroup: "Assurances", current: "MAAF", currentPrice: 24, reco: "Luko", recoPrice: 15, note: "Garanties équivalentes, sans engagement.", action: "resilier" },
+        { cat: "Box internet", catGroup: "Télécom & Internet", current: "Bouygues Telecom", currentPrice: 34.99, reco: "Free · Freebox Pop", recoPrice: 29.99, note: "Fibre équivalente disponible chez vous.", action: "contacter" }
+      ],
+      bilanExtra: "0 appel à passer — on prépare les résiliations et souscriptions pour vous.",
+      ctaActivate: "Activer mes économies"
+    },
+    entreprise: {
+      heroStat: 1215,
+      heroStatLabel: "économisés en moyenne chaque mois, sans impact sur vos services",
+      budgetScore: { stars: 2, label: "À optimiser", level: "level-optimize" },
+      connectOptions: [
+        { icon: "🏦", title: "Connecter le compte bancaire pro", desc: "Agrégation sécurisée, en lecture seule, de vos comptes et cartes entreprise.", meta: "Compatible avec les principales banques pro", cta: "Connecter via mon espace pro" },
+        { icon: "🗂️", title: "Importer les factures fournisseurs", desc: "Déposez vos exports comptables ou factures PDF — analyse effectuée localement.", meta: "PDF · CSV · export FEC", cta: "Choisir des fichiers à importer" }
+      ],
+      totalMonthly: 8940,
+      categories: [
+        { name: "Énergie locaux", amount: 2380, slot: 1 },
+        { name: "Assurances pro", amount: 1120, slot: 2 },
+        { name: "Télécom & flotte mobile", amount: 940, slot: 3 },
+        { name: "Logiciels & SaaS", amount: 1860, slot: 4 },
+        { name: "Frais bancaires pro", amount: 340, slot: 5 },
+        { name: "Autres charges fixes", amount: 2300, slot: 6 }
+      ],
+      opportunities: [
+        { cat: "Rénégociez vos crédits", catGroup: "Crédits", current: "Prêt professionnel · Taux 4,2 %", currentPrice: 2400, reco: "Renégociation · Taux 3,4 %", recoPrice: 2250, note: "Économie sur la durée de l'emprunt, sans rallonger l'échéance.", action: "contacter", important: true },
+        { cat: "Énergie locaux", catGroup: "Énergie locaux", current: "EDF Entreprises", currentPrice: 1980, reco: "OHM Énergie Pro", recoPrice: 1540, note: "Puissance et profil de consommation identiques.", action: "contacter" },
+        { cat: "Logiciels SaaS", catGroup: "Logiciels & SaaS", current: "4 abonnements en doublon", currentPrice: 540, reco: "Consolidation en 2 licences", recoPrice: 290, note: "Usage réel mesuré sur 90 jours.", action: "resilier" },
+        { cat: "Téléphonie & flotte", catGroup: "Télécom & flotte mobile", current: "Orange Business", currentPrice: 620, reco: "Prixtel Pro", recoPrice: 410, note: "12 lignes, même enveloppe data.", action: "abonner" },
+        { cat: "Assurance RC Pro", catGroup: "Assurances pro", current: "Allianz", currentPrice: 410, reco: "Wilov", recoPrice: 295, note: "Couverture équivalente pour votre activité.", action: "resilier" },
+        { cat: "Frais bancaires pro", catGroup: "Frais bancaires pro", current: "Banque historique", currentPrice: 89, reco: "Qonto", recoPrice: 39, note: "Mêmes services, tarification pro.", action: "abonner" }
+      ],
+      bilanExtra: "Validation en un clic pour votre service achats — résiliations groupées.",
+      ctaActivate: "Activer les économies de l'entreprise"
+    }
+  };
+
+  const NEUTRAL_STAT = {
+    amount: 875,
+    label: "économisés en moyenne chez les utilisateurs Optimus",
+    score: { stars: 3, label: "Moyenne observée", level: "level-neutral" }
+  };
+  const PENDING_STAT = {
+    amount: 0,
+    label: "connectez vos données pour révéler votre économie potentielle",
+    score: { stars: 0, label: "En attente de connexion", level: "level-pending" }
+  };
+
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const fmtEUR = (n) => n.toLocaleString("fr-FR", { minimumFractionDigits: 0, maximumFractionDigits: 2 }) + " €";
+  const initials = (s) => s.replace(/[·(].*$/, "").trim().split(/\s+/).slice(0, 2).map(w => w[0]).join("").toUpperCase();
+
+  const PARTNERS = [
+    { group: "Énergie", items: ["EDF", "Total Energies", "Primeo Energie", "Mint Énergie", "OHM Énergie"] },
+    { group: "Assurance", items: ["AXA", "Allianz", "MAAF", "Leocare", "Luko"] },
+    { group: "Télécom", items: ["Orange", "Sosh", "Free", "Bouygues Telecom", "Prixtel"] },
+    { group: "Banque & paiement", items: ["Qonto", "Wise", "Boursorama", "N26", "Revolut"] },
+    { group: "Crédit & immobilier", items: ["Finantek", "Assurance Crédit Immo", "Meilleurtaux", "Pretto", "Cafpi"] },
+    { group: "Logiciels & SaaS pro", items: ["Payfit", "Alan", "Spendesk", "Pennylane", "Malt"] }
+  ];
+  const FEATURED_PARTNERS = ["Finantek", "Sosh", "Total Energies"];
+  const LOGO_PALETTE = ["var(--accent)", "var(--pink)", "var(--gold)", "var(--teal)", "var(--coral)", "var(--accent-strong)"];
+
+  function monogram(name) {
+    const words = name.trim().split(/\s+/);
+    if (words.length >= 2) return words.slice(0, 2).map((w) => w[0]).join("").toUpperCase();
+    const isShortAcronym = /^[A-Z0-9]+$/.test(name) && name.length <= 3;
+    return isShortAcronym ? name.toUpperCase() : name.slice(0, 2).toUpperCase();
+  }
+
+  function partnerLogo(name, color, size) {
+    return `<span class="partner-logo" style="background:${color}; width:${size}px; height:${size}px; font-size:${size <= 40 ? '0.72rem' : '0.76rem'};">${monogram(name)}</span>`;
+  }
+
+  function renderPartners() {
+    let i = 0;
+    const wrap = el("#partnersWrap");
+    wrap.innerHTML = PARTNERS.map((g) => `
+      <div class="partner-group">
+        <h3>${g.group}</h3>
+        <div class="partner-grid">
+          ${g.items.map((name) => {
+            const color = LOGO_PALETTE[i++ % LOGO_PALETTE.length];
+            return `
+              <div class="partner-card">
+                ${partnerLogo(name, color, 44)}
+                <span class="partner-name">${name}</span>
+              </div>
+            `;
+          }).join("")}
+        </div>
+      </div>
+    `).join("");
+
+    const featured = el("#featuredPartners");
+    featured.innerHTML = FEATURED_PARTNERS.map((name, idx) => `
+      <div class="featured-card">
+        ${partnerLogo(name, LOGO_PALETTE[idx % LOGO_PALETTE.length], 40)}
+        <div>
+          <div class="partner-name">${name}</div>
+          <div class="featured-stars">★★★★★</div>
+        </div>
+      </div>
+    `).join("");
+  }
+
+  let currentMode = "particulier";
+  let currentSort = "savings";
+  let currentCatSort = "budget";
+  let isConnected = false;
+
+  const el = (sel) => document.querySelector(sel);
+  const els = (sel) => Array.from(document.querySelectorAll(sel));
+
+  const SUN_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2.5M12 19.5V22M4.22 4.22l1.77 1.77M17.99 17.99l1.79 1.79M2 12h2.5M19.5 12H22M4.22 19.78l1.77-1.77M17.99 6.01l1.79-1.79"></path></svg>';
+  const MOON_ICON = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.4 14.7A8.5 8.5 0 019.3 3.6a.6.6 0 00-.72-.82A9.5 9.5 0 1021.2 15.4a.6.6 0 00-.8-.7z"></path></svg>';
+
+  function getTheme() {
+    const attr = document.documentElement.getAttribute("data-theme");
+    if (attr === "dark" || attr === "light") return attr;
+    return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+  }
+  function paintThemeToggle() {
+    const btn = el("#themeToggle");
+    const theme = getTheme();
+    btn.innerHTML = theme === "dark" ? SUN_ICON : MOON_ICON;
+    btn.setAttribute("aria-label", theme === "dark" ? "Passer en mode clair" : "Passer en mode sombre");
+    btn.title = theme === "dark" ? "Mode clair" : "Mode sombre";
+  }
+  (function initTheme() {
+    try {
+      const saved = localStorage.getItem("optimus-theme");
+      if (saved === "dark" || saved === "light") document.documentElement.setAttribute("data-theme", saved);
+    } catch (e) {}
+  })();
+  el("#themeToggle").addEventListener("click", () => {
+    const next = getTheme() === "dark" ? "light" : "dark";
+    document.documentElement.setAttribute("data-theme", next);
+    try { localStorage.setItem("optimus-theme", next); } catch (e) {}
+    paintThemeToggle();
+  });
+  paintThemeToggle();
+
+  function animateNumber(node, from, to, opts) {
+    opts = opts || {};
+    const duration = reduceMotion ? 0 : (opts.duration || 900);
+    const format = opts.format || ((v) => fmtEUR(Math.round(v)));
+    const suffix = opts.suffix || "";
+    if (duration === 0) { node.innerHTML = format(to) + suffix; return; }
+    const start = performance.now();
+    function tick(now) {
+      const p = Math.min(1, (now - start) / duration);
+      const eased = 1 - Math.pow(1 - p, 3);
+      const val = from + (to - from) * eased;
+      node.innerHTML = format(val) + suffix;
+      if (p < 1) requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+  }
+
+  function setHeroStat(amount, label, score) {
+    const heroNode = el("#heroStat");
+    const prevHero = Number(heroNode.dataset.target || 0);
+    heroNode.dataset.target = amount;
+    animateNumber(heroNode, prevHero, amount);
+    el("#heroStatLabel").textContent = label;
+
+    el("#scoreStars").innerHTML = Array.from({ length: 5 }, (_, i) =>
+      `<span class="${i < score.stars ? 'filled' : ''}">★</span>`
+    ).join("");
+    const scoreTag = el("#scoreTag");
+    scoreTag.textContent = score.label;
+    scoreTag.className = "score-tag " + score.level;
+  }
+
+  function render(mode) {
+    const d = MODES[mode];
+
+    // step 1
+    const grid = el("#connectGrid");
+    grid.innerHTML = "";
+    d.connectOptions.forEach((opt) => {
+      const card = document.createElement("div");
+      card.className = "connect-card";
+      card.innerHTML = `
+        <div class="connect-icon">${opt.icon}</div>
+        <h4>${opt.title}</h4>
+        <p>${opt.desc}</p>
+        <div class="connect-meta">${opt.meta}</div>
+        <button type="button">${opt.cta}</button>
+      `;
+      card.querySelector("button").addEventListener("click", () => {
+        isConnected = true;
+        setHeroStat(d.heroStat, d.heroStatLabel, d.budgetScore);
+        showToast("Démonstration — connexion simulée. Passez à l'étape « Diagnostic ».");
+        goToStep(2);
+      });
+      grid.appendChild(card);
+    });
+
+    // step 2
+    el("#totalFigure").textContent = fmtEUR(d.totalMonthly);
+    renderBars(d);
+
+    // step 3
+    renderOpportunities(d);
+
+    // step 4
+    renderBilan(d);
+  }
+
+  function renderBars(d) {
+    const maxSavingByCat = {};
+    d.opportunities.forEach((o) => {
+      const s = o.currentPrice - o.recoPrice;
+      if (!maxSavingByCat[o.catGroup] || s > maxSavingByCat[o.catGroup]) maxSavingByCat[o.catGroup] = s;
+    });
+
+    const ecoMode = currentCatSort === "economie";
+
+    const legend = el("#legend");
+    legend.innerHTML = ecoMode
+      ? `<span class="legend-item"><span class="legend-swatch eco"></span>Économie potentielle max par poste</span>`
+      : d.categories.map((c) =>
+          `<span class="legend-item"><span class="legend-swatch" style="background:var(--viz-cat-${c.slot})"></span>${c.name}</span>`
+        ).join("") + `<span class="legend-item"><span class="legend-swatch eco"></span>Économie max identifiée</span>`;
+
+    const sorted = [...d.categories].sort((a, b) => {
+      if (currentCatSort === "economie") return (maxSavingByCat[b.name] || 0) - (maxSavingByCat[a.name] || 0);
+      return b.amount - a.amount;
+    });
+
+    const maxAmount = Math.max(...d.categories.map((c) => c.amount));
+    const maxEcoSaving = Math.max(0, ...d.categories.map((c) => maxSavingByCat[c.name] || 0));
+
+    const bars = el("#bars");
+    bars.innerHTML = "";
+    sorted.forEach((c) => {
+      const block = document.createElement("div");
+      block.className = "cat-block";
+      const maxSaving = maxSavingByCat[c.name] || 0;
+
+      if (ecoMode) {
+        const ecoIndexPct = maxEcoSaving > 0 ? (maxSaving / maxEcoSaving) * 100 : 0;
+        const tip = maxSaving > 0
+          ? `${c.name} · jusqu'à ${fmtEUR(maxSaving)}/mois d'économie`
+          : `${c.name} · aucune économie identifiée pour l'instant`;
+        block.innerHTML = `
+          <div class="cat-head">
+            <span class="cat-name">${c.name}</span>
+            <span class="cat-amount ${maxSaving > 0 ? '' : 'empty'}">${maxSaving > 0 ? `− ${fmtEUR(maxSaving)} possible` : 'Aucune identifiée'}</span>
+          </div>
+          <div class="bar-track"><span class="bar-fill eco-main-fill" data-width="${ecoIndexPct}" data-tip="${tip}"></span><span class="bar-pct">${ecoIndexPct.toFixed(0)}%</span></div>
+        `;
+      } else {
+        const indexPct = (c.amount / maxAmount) * 100;
+        const sharePct = (c.amount / d.totalMonthly) * 100;
+        const ecoPct = maxSaving > 0 ? Math.min(100, (maxSaving / c.amount) * 100) : 0;
+        const spendTip = `${c.name} · ${fmtEUR(c.amount)}/mois · ${sharePct.toFixed(0)}% du budget total`;
+        const ecoTip = maxSaving > 0
+          ? `${c.name} · jusqu'à ${fmtEUR(maxSaving)}/mois d'économie (${ecoPct.toFixed(0)}% du poste)`
+          : `${c.name} · aucune économie identifiée pour l'instant`;
+        block.innerHTML = `
+          <div class="cat-head">
+            <span class="cat-name">${c.name}</span>
+            <span class="cat-amount">${fmtEUR(c.amount)}</span>
+          </div>
+          <div class="bar-track"><span class="bar-fill" style="background:var(--viz-cat-${c.slot}); box-shadow: 0 0 16px -2px color-mix(in oklab, var(--viz-cat-${c.slot}) 70%, transparent);" data-width="${indexPct}" data-tip="${spendTip}"></span><span class="bar-pct">${indexPct.toFixed(0)}%</span></div>
+          <div class="eco-row">
+            <span class="eco-label">Économie max</span>
+            <div class="eco-track"><span class="eco-fill" data-width="${ecoPct}" data-tip="${ecoTip}"></span></div>
+            <span class="eco-amount ${maxSaving > 0 ? '' : 'empty'}">${maxSaving > 0 ? `− ${fmtEUR(maxSaving)} possible` : 'Aucune identifiée'}</span>
+          </div>
+        `;
+      }
+      bars.appendChild(block);
+    });
+    reanimateBars();
+
+    const tbody = el("#dataTableBody");
+    tbody.innerHTML = sorted.map((c) => {
+      const pct = ((c.amount / d.totalMonthly) * 100).toFixed(1).replace(".", ",");
+      const maxSaving = maxSavingByCat[c.name] || 0;
+      return `<tr><td>${c.name}</td><td class="num">${fmtEUR(c.amount)}</td><td class="num">${pct} %</td><td class="num">${maxSaving > 0 ? "− " + fmtEUR(maxSaving) : "—"}</td></tr>`;
+    }).join("");
+
+    attachBarTooltips();
+  }
+
+  function reanimateBars() {
+    const fills = els(".bar-fill, .eco-fill");
+    fills.forEach((f) => { f.style.width = "0%"; });
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        fills.forEach((f) => { f.style.width = f.dataset.width + "%"; });
+      });
+    });
+  }
+
+  function renderOpportunities(d) {
+    const list = d.opportunities.map((o) => ({ ...o, savings: o.currentPrice - o.recoPrice }));
+    if (currentSort === "savings") {
+      list.sort((a, b) => b.savings - a.savings);
+    } else {
+      list.sort((a, b) => a.cat.localeCompare(b.cat, "fr"));
+    }
+    const container = el("#oppList");
+    container.innerHTML = list.map((o) => `
+      <div class="opp-card${o.important ? ' important' : ''}">
+        <div>
+          <div class="opp-cat-row">
+            <div class="opp-cat">${o.cat}</div>
+            ${o.important ? '<span class="opp-priority">❗ Prioritaire</span>' : ''}
+          </div>
+          <div class="opp-compare">
+            <div class="opp-side">
+              <span class="badge badge-current">${initials(o.current)}</span>
+              <span class="opp-provider">${o.current}</span>
+              <span class="opp-price strike">${fmtEUR(o.currentPrice)}</span>
+            </div>
+            <span class="opp-arrow">→</span>
+            <div class="opp-side">
+              <span class="badge badge-reco">${initials(o.reco)}</span>
+              <span class="opp-provider">${o.reco}</span>
+              <span class="opp-price">${fmtEUR(o.recoPrice)}/mois</span>
+            </div>
+          </div>
+          <div class="opp-note">${o.note}</div>
+        </div>
+        <div class="opp-savings">
+          <div class="amt">↓ ${fmtEUR(o.savings)}</div>
+          <div class="per">par mois · ${fmtEUR(o.savings * 12)}/an</div>
+        </div>
+      </div>
+    `).join("");
+  }
+
+  function renderBilan(d) {
+    const total = Math.round((d.opportunities.reduce((sum, o) => sum + (o.currentPrice - o.recoPrice), 0)) * 100) / 100;
+    const annual = Math.round(total * 12);
+    const bilanNode = el("#bilanNum");
+    bilanNode.dataset.target = annual;
+    animateNumber(bilanNode, 0, annual, { suffix: '<span class="num-suffix">/an</span>' });
+    el("#bilanMonthly").innerHTML = `soit <span>${fmtEUR(total)}</span> chaque mois`;
+    el("#bilanExtra").textContent = d.bilanExtra;
+    el("#ctaActivate").textContent = d.ctaActivate;
+
+    const mini = el("#bilanMini");
+    mini.innerHTML = d.opportunities
+      .map((o) => ({ ...o, savings: o.currentPrice - o.recoPrice }))
+      .sort((a, b) => b.savings - a.savings)
+      .map((o) => `<div class="bilan-mini-row"><span>${o.cat}</span><span class="v">↓ ${fmtEUR(o.savings)}/mois</span></div>`)
+      .join("");
+
+    el("#activationList").classList.add("visible");
+    renderActivationList(d);
+  }
+
+  const ACTION_LABELS = {
+    resilier: { button: "Résilier", done: "✓ Résilié", toast: (o) => `Démonstration — résiliation simulée auprès de ${o.current}.` },
+    contacter: { button: "Contacter", done: "✓ Contacté", toast: (o) => `Démonstration — mise en relation simulée avec un conseiller ${o.reco}.` },
+    abonner: { button: "S'abonner", done: "✓ Abonné", toast: (o) => `Démonstration — souscription simulée chez ${o.reco}.` }
+  };
+
+  function renderActivationList(d) {
+    const list = d.opportunities.map((o) => ({ ...o, savings: o.currentPrice - o.recoPrice }))
+      .sort((a, b) => b.savings - a.savings);
+    const rows = el("#activationRows");
+    rows.innerHTML = list.map((o, i) => {
+      const buttons = ["resilier", "contacter", "abonner"].map((key) => {
+        const a = ACTION_LABELS[key];
+        const primary = key === o.action ? " primary" : "";
+        return `<button class="action-btn${primary}" type="button" data-action="${key}" data-index="${i}">${a.button}</button>`;
+      }).join("");
+      return `
+        <div class="activation-row" data-index="${i}">
+          <div>
+            <div class="a-cat">${o.cat}${o.important ? ' <span class="opp-priority">❗ Prioritaire</span>' : ''}</div>
+            <div class="a-detail">${o.current} → ${o.reco} · <b>↓ ${fmtEUR(o.savings)}/mois</b></div>
+          </div>
+          <div class="action-btn-group">${buttons}</div>
+        </div>
+      `;
+    }).join("");
+
+    els("#activationRows .action-btn").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const o = list[Number(btn.dataset.index)];
+        const a = ACTION_LABELS[btn.dataset.action];
+        btn.disabled = true;
+        btn.textContent = a.done;
+        showToast(a.toast(o));
+        const row = btn.closest(".activation-row");
+        if (row.querySelectorAll(".action-btn:disabled").length === row.querySelectorAll(".action-btn").length) {
+          row.classList.add("done");
+        }
+      });
+    });
+  }
+
+  function attachBarTooltips() {
+    const tooltip = el("#chartTooltip");
+    els(".bar-fill, .eco-fill").forEach((bar) => {
+      bar.addEventListener("mousemove", (e) => {
+        tooltip.textContent = bar.dataset.tip;
+        tooltip.style.left = e.clientX + "px";
+        tooltip.style.top = e.clientY + "px";
+        tooltip.classList.add("visible");
+      });
+      bar.addEventListener("mouseleave", () => tooltip.classList.remove("visible"));
+    });
+  }
+
+  function goToStep(n) {
+    els(".step-tab").forEach((t) => {
+      const active = Number(t.dataset.step) === n;
+      t.classList.toggle("active", active);
+      t.setAttribute("aria-selected", String(active));
+    });
+    els(".panel").forEach((p) => p.classList.toggle("active", Number(p.dataset.panel) === n));
+    if (n === 2) reanimateBars();
+    if (n === 4) renderBilan(MODES[currentMode]);
+  }
+
+  let toastTimer;
+  function showToast(msg) {
+    const toast = el("#toast");
+    toast.textContent = msg;
+    toast.classList.add("visible");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => toast.classList.remove("visible"), 3200);
+  }
+
+  // wire up
+  els(".step-tab").forEach((t) => t.addEventListener("click", () => goToStep(Number(t.dataset.step))));
+
+  const modeToggle = el("#modeToggle");
+  els(".mode-toggle button").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      currentMode = btn.dataset.mode;
+      modeToggle.dataset.mode = currentMode;
+      els(".mode-toggle button").forEach((b) => b.classList.toggle("active", b === btn));
+      isConnected = false;
+      render(currentMode);
+      setHeroStat(PENDING_STAT.amount, PENDING_STAT.label, PENDING_STAT.score);
+    });
+  });
+
+  el("#tableToggle").addEventListener("click", () => {
+    const table = el("#dataTable");
+    const bars = el("#bars");
+    const legend = el("#legend");
+    const showingTable = table.classList.toggle("visible");
+    bars.style.display = showingTable ? "none" : "flex";
+    legend.style.display = showingTable ? "none" : "flex";
+    el("#tableToggle").textContent = showingTable ? "Afficher le graphique" : "Afficher en tableau";
+  });
+
+  els("[data-sort]").forEach((chip) => {
+    chip.addEventListener("click", () => {
+      currentSort = chip.dataset.sort;
+      els("[data-sort]").forEach((c) => c.classList.toggle("active", c === chip));
+      renderOpportunities(MODES[currentMode]);
+    });
+  });
+
+  els("[data-catsort]").forEach((chip) => {
+    chip.addEventListener("click", () => {
+      currentCatSort = chip.dataset.catsort;
+      els("[data-catsort]").forEach((c) => c.classList.toggle("active", c === chip));
+      renderBars(MODES[currentMode]);
+    });
+  });
+
+  el("#ctaStart").addEventListener("click", () => {
+    document.getElementById("demo").scrollIntoView({ behavior: "smooth" });
+    goToStep(1);
+  });
+  el("#ctaActivate").addEventListener("click", () => {
+    const activation = el("#activationList");
+    activation.classList.add("visible");
+    activation.scrollIntoView({ behavior: "smooth", block: "nearest" });
+  });
+  el("#ctaReport").addEventListener("click", () => showToast("Démonstration — un PDF récapitulatif serait généré ici."));
+
+  render(currentMode);
+  setHeroStat(NEUTRAL_STAT.amount, NEUTRAL_STAT.label, NEUTRAL_STAT.score);
+  renderPartners();
+})();
+</script>
+</body>
+</html>
