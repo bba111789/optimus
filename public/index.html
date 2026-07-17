@@ -1402,6 +1402,16 @@
     } else {
       list.sort((a, b) => a.cat.localeCompare(b.cat, "fr"));
     }
+
+    const MAX_BADGES = 2;
+    const badgeCats = new Set(
+      d.opportunities
+        .filter((o) => o.poolSize >= 50)
+        .sort((a, b) => b.poolSize - a.poolSize)
+        .slice(0, MAX_BADGES)
+        .map((o) => o.cat)
+    );
+
     const container = el("#oppList");
     container.innerHTML = list.map((o) => `
       <div class="opp-card${o.important ? ' important' : ''}">
@@ -1409,7 +1419,7 @@
           <div class="opp-cat-row">
             <div class="opp-cat">${o.cat}</div>
             ${o.important ? '<span class="opp-priority">❗ Prioritaire</span>' : ''}
-            ${o.poolSize >= 50 ? `<span class="negotiated-badge" data-target="${o.poolSize}"><span class="live-dot"></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"></path><circle cx="10" cy="7" r="4"></circle><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>Négocié par Optimus · <span class="count">0</span> personnes</span>` : ''}
+            ${badgeCats.has(o.cat) ? `<span class="negotiated-badge" data-target="${o.poolSize}"><span class="live-dot"></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"></path><circle cx="10" cy="7" r="4"></circle><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>Négocié par Optimus · <span class="count">0</span> personnes</span>` : ''}
           </div>
           <div class="opp-compare">
             <div class="opp-side">
