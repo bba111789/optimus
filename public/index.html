@@ -607,7 +607,7 @@
   }
   .opp-card.important { border-color: color-mix(in oklab, var(--coral) 45%, var(--border)); box-shadow: 0 0 0 1px color-mix(in oklab, var(--coral) 20%, transparent); }
   .opp-card:hover { border-color: var(--border-strong); transform: translateY(-2px); }
-  .opp-cat-row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+  .opp-cat-row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; flex-wrap: wrap; }
   .opp-cat { font-size: 0.72rem; text-transform: uppercase; letter-spacing: .07em; color: var(--muted); font-weight: 800; margin-bottom: 0; }
   .opp-priority {
     display: inline-flex; align-items: center; gap: 5px; font-size: 0.68rem; font-weight: 800;
@@ -627,6 +627,31 @@
   .opp-price.strike { color: var(--muted); text-decoration: line-through; text-decoration-color: var(--coral); }
   .opp-arrow { color: var(--accent); font-weight: 800; }
   .opp-note { font-size: 0.82rem; color: var(--muted); margin-top: 10px; }
+
+  .negotiated-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 0.68rem; font-weight: 700; letter-spacing: 0.01em;
+    color: var(--teal);
+    background: color-mix(in oklab, var(--teal) 12%, transparent);
+    border: 1px solid color-mix(in oklab, var(--teal) 32%, transparent);
+    padding: 4px 10px 4px 8px; border-radius: 999px;
+    opacity: 0; transform: scale(0.85) translateY(2px);
+    transition: opacity .5s cubic-bezier(.16,1,.3,1), transform .5s cubic-bezier(.16,1,.3,1);
+    white-space: nowrap;
+  }
+  .negotiated-badge.visible { opacity: 1; transform: scale(1) translateY(0); }
+  .negotiated-badge svg { width: 12px; height: 12px; flex-shrink: 0; }
+  .negotiated-badge .count { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+  .negotiated-badge .live-dot {
+    width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0;
+    background: var(--teal);
+    animation: badge-ring 2.4s ease-out infinite;
+  }
+  @keyframes badge-ring {
+    0% { box-shadow: 0 0 0 0 color-mix(in oklab, var(--teal) 45%, transparent); }
+    70% { box-shadow: 0 0 0 6px color-mix(in oklab, var(--teal) 0%, transparent); }
+    100% { box-shadow: 0 0 0 0 color-mix(in oklab, var(--teal) 0%, transparent); }
+  }
   .opp-savings { text-align: right; white-space: nowrap; }
   .opp-savings .amt {
     font-family: var(--font-mono); font-weight: 800; font-size: 1.4rem;
@@ -1038,11 +1063,11 @@
       ],
       opportunities: [
         { cat: "Rénégociez vos crédits", catGroup: "Crédits", current: "Crédit immobilier · Taux 3,8 %", currentPrice: 890, reco: "Renégociation · Taux 3,1 %", recoPrice: 845, note: "Économie sur la durée du prêt, sans rallonger l'échéance.", action: "contacter", important: true },
-        { cat: "Énergie", catGroup: "Énergie", current: "EDF · Tarif Bleu", currentPrice: 89, reco: "Mint Énergie · Online", recoPrice: 71, note: "Même consommation, offre 100 % en ligne.", action: "abonner" },
-        { cat: "Forfait mobile", catGroup: "Télécom & Internet", current: "Orange · 40 Go", currentPrice: 39.99, reco: "Sosh · 40 Go", recoPrice: 15.99, note: "Même réseau, même enveloppe data.", action: "abonner" },
-        { cat: "Assurance auto", catGroup: "Assurances", current: "AXA", currentPrice: 52, reco: "Leocare", recoPrice: 38, note: "Formule tous risques équivalente.", action: "resilier" },
-        { cat: "Assurance habitation", catGroup: "Assurances", current: "MAAF", currentPrice: 24, reco: "Luko", recoPrice: 15, note: "Garanties équivalentes, sans engagement.", action: "resilier" },
-        { cat: "Box internet", catGroup: "Télécom & Internet", current: "Bouygues Telecom", currentPrice: 34.99, reco: "Free · Freebox Pop", recoPrice: 29.99, note: "Fibre équivalente disponible chez vous.", action: "contacter" }
+        { cat: "Énergie", catGroup: "Énergie", current: "EDF · Tarif Bleu", currentPrice: 89, reco: "Mint Énergie · Online", recoPrice: 71, note: "Même consommation, offre 100 % en ligne.", action: "abonner", poolSize: 812 },
+        { cat: "Forfait mobile", catGroup: "Télécom & Internet", current: "Orange · 40 Go", currentPrice: 39.99, reco: "Sosh · 40 Go", recoPrice: 15.99, note: "Même réseau, même enveloppe data.", action: "abonner", poolSize: 340 },
+        { cat: "Assurance auto", catGroup: "Assurances", current: "AXA", currentPrice: 52, reco: "Leocare", recoPrice: 38, note: "Formule tous risques équivalente.", action: "resilier", poolSize: 156 },
+        { cat: "Assurance habitation", catGroup: "Assurances", current: "MAAF", currentPrice: 24, reco: "Luko", recoPrice: 15, note: "Garanties équivalentes, sans engagement.", action: "resilier", poolSize: 41 },
+        { cat: "Box internet", catGroup: "Télécom & Internet", current: "Bouygues Telecom", currentPrice: 34.99, reco: "Free · Freebox Pop", recoPrice: 29.99, note: "Fibre équivalente disponible chez vous.", action: "contacter", poolSize: 203 }
       ],
       bilanExtra: "0 appel à passer — on prépare les résiliations et souscriptions pour vous.",
       ctaActivate: "Activer mes économies"
@@ -1066,11 +1091,11 @@
       ],
       opportunities: [
         { cat: "Rénégociez vos crédits", catGroup: "Crédits", current: "Prêt professionnel · Taux 4,2 %", currentPrice: 2400, reco: "Renégociation · Taux 3,4 %", recoPrice: 2250, note: "Économie sur la durée de l'emprunt, sans rallonger l'échéance.", action: "contacter", important: true },
-        { cat: "Énergie locaux", catGroup: "Énergie locaux", current: "EDF Entreprises", currentPrice: 1980, reco: "OHM Énergie Pro", recoPrice: 1540, note: "Puissance et profil de consommation identiques.", action: "contacter" },
-        { cat: "Logiciels SaaS", catGroup: "Logiciels & SaaS", current: "4 abonnements en doublon", currentPrice: 540, reco: "Consolidation en 2 licences", recoPrice: 290, note: "Usage réel mesuré sur 90 jours.", action: "resilier" },
-        { cat: "Téléphonie & flotte", catGroup: "Télécom & flotte mobile", current: "Orange Business", currentPrice: 620, reco: "Prixtel Pro", recoPrice: 410, note: "12 lignes, même enveloppe data.", action: "abonner" },
-        { cat: "Assurance RC Pro", catGroup: "Assurances pro", current: "Allianz", currentPrice: 410, reco: "Wilov", recoPrice: 295, note: "Couverture équivalente pour votre activité.", action: "resilier" },
-        { cat: "Frais bancaires pro", catGroup: "Frais bancaires pro", current: "Banque historique", currentPrice: 89, reco: "Qonto", recoPrice: 39, note: "Mêmes services, tarification pro.", action: "abonner" }
+        { cat: "Énergie locaux", catGroup: "Énergie locaux", current: "EDF Entreprises", currentPrice: 1980, reco: "OHM Énergie Pro", recoPrice: 1540, note: "Puissance et profil de consommation identiques.", action: "contacter", poolSize: 89 },
+        { cat: "Logiciels SaaS", catGroup: "Logiciels & SaaS", current: "4 abonnements en doublon", currentPrice: 540, reco: "Consolidation en 2 licences", recoPrice: 290, note: "Usage réel mesuré sur 90 jours.", action: "resilier", poolSize: 12 },
+        { cat: "Téléphonie & flotte", catGroup: "Télécom & flotte mobile", current: "Orange Business", currentPrice: 620, reco: "Prixtel Pro", recoPrice: 410, note: "12 lignes, même enveloppe data.", action: "abonner", poolSize: 64 },
+        { cat: "Assurance RC Pro", catGroup: "Assurances pro", current: "Allianz", currentPrice: 410, reco: "Wilov", recoPrice: 295, note: "Couverture équivalente pour votre activité.", action: "resilier", poolSize: 33 },
+        { cat: "Frais bancaires pro", catGroup: "Frais bancaires pro", current: "Banque historique", currentPrice: 89, reco: "Qonto", recoPrice: 39, note: "Mêmes services, tarification pro.", action: "abonner", poolSize: 178 }
       ],
       bilanExtra: "Validation en un clic pour votre service achats — résiliations groupées.",
       ctaActivate: "Activer les économies de l'entreprise"
@@ -1353,6 +1378,7 @@
           <div class="opp-cat-row">
             <div class="opp-cat">${o.cat}</div>
             ${o.important ? '<span class="opp-priority">❗ Prioritaire</span>' : ''}
+            ${o.poolSize >= 50 ? `<span class="negotiated-badge" data-target="${o.poolSize}"><span class="live-dot"></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"></path><circle cx="10" cy="7" r="4"></circle><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>Négocié par Optimus · <span class="count">0</span> personnes</span>` : ''}
           </div>
           <div class="opp-compare">
             <div class="opp-side">
@@ -1375,6 +1401,15 @@
         </div>
       </div>
     `).join("");
+
+    els(".negotiated-badge").forEach((badge, i) => {
+      const target = Number(badge.dataset.target);
+      const countNode = badge.querySelector(".count");
+      setTimeout(() => {
+        badge.classList.add("visible");
+        animateNumber(countNode, 0, target, { duration: reduceMotion ? 0 : 900, format: (v) => Math.round(v).toLocaleString("fr-FR"), suffix: "" });
+      }, reduceMotion ? 0 : 350 + i * 140);
+    });
   }
 
   function renderBilan(d) {
