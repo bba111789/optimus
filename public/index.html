@@ -1395,6 +1395,17 @@
     });
   }
 
+  function getBadgeCats(d) {
+    const MAX_BADGES = 2;
+    return new Set(
+      d.opportunities
+        .filter((o) => o.poolSize >= 50)
+        .sort((a, b) => b.poolSize - a.poolSize)
+        .slice(0, MAX_BADGES)
+        .map((o) => o.cat)
+    );
+  }
+
   function renderOpportunities(d) {
     const list = d.opportunities.map((o) => ({ ...o, savings: o.currentPrice - o.recoPrice }));
     if (currentSort === "savings") {
@@ -1403,14 +1414,7 @@
       list.sort((a, b) => a.cat.localeCompare(b.cat, "fr"));
     }
 
-    const MAX_BADGES = 2;
-    const badgeCats = new Set(
-      d.opportunities
-        .filter((o) => o.poolSize >= 50)
-        .sort((a, b) => b.poolSize - a.poolSize)
-        .slice(0, MAX_BADGES)
-        .map((o) => o.cat)
-    );
+    const badgeCats = getBadgeCats(d);
 
     const container = el("#oppList");
     container.innerHTML = list.map((o) => `
@@ -1483,6 +1487,7 @@
   function renderActivationList(d) {
     const list = d.opportunities.map((o) => ({ ...o, savings: o.currentPrice - o.recoPrice }))
       .sort((a, b) => b.savings - a.savings);
+    const badgeCats = getBadgeCats(d);
     const rows = el("#activationRows");
     rows.innerHTML = list.map((o, i) => {
       const buttons = ["resilier", "contacter", "abonner"].map((key) => {
@@ -1490,10 +1495,13 @@
         const primary = key === o.action ? " primary" : "";
         return `<button class="action-btn${primary}" type="button" data-action="${key}" data-index="${i}">${a.button}</button>`;
       }).join("");
+      const negotiatedBadge = badgeCats.has(o.cat)
+        ? ` <span class="negotiated-badge visible"><span class="live-dot"></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"></path><circle cx="10" cy="7" r="4"></circle><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>Négocié par Optimus · <span class="count">${o.poolSize ? o.poolSize.toLocaleString('fr-FR') : 0}</span> personnes</span>`
+        : '';
       return `
         <div class="activation-row" data-index="${i}">
           <div>
-            <div class="a-cat">${o.cat}${o.important ? ' <span class="opp-priority">❗ Prioritaire</span>' : ''}</div>
+            <div class="a-cat">${o.cat}${o.important ? ' <span class="opp-priority">❗ Prioritaire</span>' : ''}${negotiatedBadge}</div>
             <div class="a-detail">${o.current} → ${o.reco} · <b>↓ ${fmtEUR(o.savings)}/mois</b></div>
           </div>
           <div class="action-btn-group">${buttons}</div>
