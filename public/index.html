@@ -399,6 +399,28 @@
     0%, 100% { transform: translateY(0) rotate(-1.5deg); }
     50% { transform: translateY(-14px) rotate(1.5deg); }
   }
+  .mascot-tagline {
+    position: absolute; top: -10px; right: -34px;
+    display: inline-flex; align-items: center; gap: 5px;
+    background: var(--surface); color: var(--ink);
+    border: 1.5px solid var(--gold);
+    font-size: 0.64rem; font-weight: 800; letter-spacing: 0.01em;
+    padding: 6px 12px; border-radius: 999px;
+    box-shadow: 0 10px 22px -10px var(--shadow-strong);
+    white-space: nowrap; transform: rotate(-3deg);
+    animation: bubble-pulse 3.2s ease-in-out infinite;
+  }
+  .mascot-tagline::before { content: "✨"; font-size: 0.8em; }
+  .mascot-tagline::after {
+    content: ""; position: absolute; left: 20px; bottom: -6px;
+    width: 11px; height: 11px; background: var(--surface);
+    border-right: 1.5px solid var(--gold); border-bottom: 1.5px solid var(--gold);
+    transform: rotate(45deg);
+  }
+  @keyframes bubble-pulse {
+    0%, 100% { transform: rotate(-3deg) scale(1); }
+    50% { transform: rotate(-3deg) scale(1.04); }
+  }
   @media (max-width: 900px) { .mascot { display: none; } }
 
   .bento { display: grid; grid-template-columns: 1.25fr 1fr 1fr 1fr; gap: 14px; padding: 54px 0; align-items: stretch; }
@@ -929,6 +951,7 @@
             <rect x="84" y="100" width="52" height="16" rx="8" fill="none" stroke="var(--accent-strong)" stroke-width="1.5"/>
             <path d="M100,128 q10,8 20,0" stroke="#7a4a25" stroke-width="2.5" fill="none" stroke-linecap="round"/>
           </svg>
+          <div class="mascot-tagline">Optimus s'en charge</div>
         </div>
         <div class="mock-card mock-pay">
           <div class="mock-pay-top">
