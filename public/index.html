@@ -338,14 +338,14 @@
   .btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
   /* floating mockup composition */
-  .hero-visual { position: relative; min-height: 460px; }
+  .hero-visual { position: relative; min-height: 520px; }
   .mock-card {
     position: absolute; background: var(--surface); border-radius: 20px;
     box-shadow: 0 30px 60px -20px var(--shadow-strong), 0 0 0 1px var(--border);
     padding: 20px;
   }
   .mock-pay {
-    width: 240px; top: 10px; left: 10px; z-index: 2;
+    width: 230px; top: 10px; left: 10px; z-index: 2;
     animation: float-pay 6s ease-in-out infinite;
   }
   @keyframes float-pay {
@@ -367,7 +367,7 @@
     background: var(--ink); color: var(--bg); font-weight: 700; font-size: 0.84rem; cursor: default;
   }
   .mock-dash {
-    width: 270px; top: 260px; left: 190px; z-index: 1;
+    width: 230px; top: 20px; left: 250px; z-index: 1;
     animation: float-dash 7s ease-in-out infinite;
     animation-delay: -2.3s;
   }
@@ -389,16 +389,11 @@
   .mock-dash-foot span:last-child { color: var(--ink); font-weight: 700; font-variant-numeric: tabular-nums; }
 
   .mascot {
-    position: absolute; left: -14px; bottom: -18px; width: 240px; z-index: 0;
+    position: absolute; left: 0; bottom: 0; width: 360px; z-index: 0;
     pointer-events: none;
     filter: drop-shadow(0 20px 34px var(--shadow-strong));
-    animation: float-mascot 7s ease-in-out infinite; animation-delay: -1s;
   }
   .mascot img { width: 100%; height: auto; display: block; }
-  @keyframes float-mascot {
-    0%, 100% { transform: translateY(0) rotate(-1.5deg); }
-    50% { transform: translateY(-14px) rotate(1.5deg); }
-  }
   @media (max-width: 900px) { .mascot { display: none; } }
 
   .bento { display: grid; grid-template-columns: 1.25fr 1fr 1fr 1fr; gap: 14px; padding: 54px 0; align-items: stretch; }
