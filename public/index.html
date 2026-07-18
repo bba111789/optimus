@@ -389,37 +389,15 @@
   .mock-dash-foot span:last-child { color: var(--ink); font-weight: 700; font-variant-numeric: tabular-nums; }
 
   .mascot {
-    position: absolute; left: 2px; bottom: -8px; width: 158px; z-index: 0;
+    position: absolute; left: -14px; bottom: -18px; width: 240px; z-index: 0;
     pointer-events: none;
-    filter: drop-shadow(0 18px 30px var(--shadow-strong));
+    filter: drop-shadow(0 20px 34px var(--shadow-strong));
     animation: float-mascot 7s ease-in-out infinite; animation-delay: -1s;
   }
-  .mascot svg { width: 100%; height: auto; display: block; }
+  .mascot img { width: 100%; height: auto; display: block; }
   @keyframes float-mascot {
     0%, 100% { transform: translateY(0) rotate(-1.5deg); }
     50% { transform: translateY(-14px) rotate(1.5deg); }
-  }
-  .mascot-tagline {
-    position: absolute; top: -10px; right: -34px;
-    display: inline-flex; align-items: center; gap: 5px;
-    background: var(--surface); color: var(--ink);
-    border: 1.5px solid var(--gold);
-    font-size: 0.64rem; font-weight: 800; letter-spacing: 0.01em;
-    padding: 6px 12px; border-radius: 999px;
-    box-shadow: 0 10px 22px -10px var(--shadow-strong);
-    white-space: nowrap; transform: rotate(-3deg);
-    animation: bubble-pulse 3.2s ease-in-out infinite;
-  }
-  .mascot-tagline::before { content: "✨"; font-size: 0.8em; }
-  .mascot-tagline::after {
-    content: ""; position: absolute; left: 20px; bottom: -6px;
-    width: 11px; height: 11px; background: var(--surface);
-    border-right: 1.5px solid var(--gold); border-bottom: 1.5px solid var(--gold);
-    transform: rotate(45deg);
-  }
-  @keyframes bubble-pulse {
-    0%, 100% { transform: rotate(-3deg) scale(1); }
-    50% { transform: rotate(-3deg) scale(1.04); }
   }
   @media (max-width: 900px) { .mascot { display: none; } }
 
@@ -905,52 +883,7 @@
       </div>
       <div class="hero-visual" aria-hidden="true">
         <div class="mascot">
-          <svg viewBox="0 0 220 300" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-              <linearGradient id="capeGrad" x1="0" y1="0" x2="1" y2="1">
-                <stop offset="0%" stop-color="var(--accent)"/>
-                <stop offset="100%" stop-color="var(--pink)"/>
-              </linearGradient>
-              <linearGradient id="swordGrad" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stop-color="var(--gold)"/>
-                <stop offset="100%" stop-color="#fff4d6"/>
-              </linearGradient>
-            </defs>
-            <path d="M70,90 C40,140 30,220 55,280 C85,265 135,265 165,280 C190,220 180,140 150,90 Z" fill="url(#capeGrad)" opacity="0.9"/>
-            <rect x="85" y="210" width="18" height="70" rx="8" fill="var(--ink-soft)"/>
-            <rect x="117" y="210" width="18" height="70" rx="8" fill="var(--ink-soft)"/>
-            <path d="M78,278 h34 l-4,14 h-26 z" fill="var(--gold)"/>
-            <path d="M110,278 h34 l-4,14 h-26 z" fill="var(--gold)"/>
-            <path d="M75,150 C75,140 145,140 145,150 L155,225 C120,240 100,240 65,225 Z" fill="var(--surface)" stroke="var(--gold)" stroke-width="3"/>
-            <rect x="72" y="196" width="76" height="12" rx="6" fill="var(--gold)"/>
-            <path d="M96,206 q14,-4 24,0 l3,20 q-15,8 -30,0 z" fill="#caa15c"/>
-            <text x="110" y="222" font-size="10" fill="#5a3d15" text-anchor="middle" font-weight="700">&#8364;</text>
-            <path d="M148,150 C168,140 178,110 172,80" stroke="var(--teal)" stroke-width="20" stroke-linecap="round" fill="none"/>
-            <circle cx="172" cy="78" r="11" fill="#f3c9a0"/>
-            <rect x="166" y="20" width="10" height="65" rx="4" fill="url(#swordGrad)" transform="rotate(-8 172 78)"/>
-            <rect x="160" y="78" width="24" height="9" rx="3" fill="var(--accent-strong)" transform="rotate(-8 172 78)"/>
-            <path d="M72,150 C50,155 38,175 40,195" stroke="var(--teal)" stroke-width="20" stroke-linecap="round" fill="none"/>
-            <circle cx="40" cy="197" r="11" fill="#f3c9a0"/>
-            <line x1="16" y1="188" x2="64" y2="188" stroke="var(--gold)" stroke-width="3"/>
-            <line x1="40" y1="180" x2="40" y2="188" stroke="var(--gold)" stroke-width="3"/>
-            <line x1="20" y1="188" x2="14" y2="202" stroke="var(--gold)" stroke-width="2"/>
-            <line x1="60" y1="188" x2="66" y2="202" stroke="var(--gold)" stroke-width="2"/>
-            <ellipse cx="14" cy="206" rx="12" ry="5" fill="var(--surface)" stroke="var(--gold)" stroke-width="2"/>
-            <rect x="6" y="196" width="16" height="10" rx="1" fill="#fff" stroke="var(--ink-soft)" stroke-width="1" transform="rotate(-10 14 201)"/>
-            <ellipse cx="66" cy="206" rx="12" ry="5" fill="var(--surface)" stroke="var(--gold)" stroke-width="2"/>
-            <circle cx="61" cy="199" r="5" fill="var(--gold)"/>
-            <circle cx="68" cy="197" r="5" fill="var(--gold)"/>
-            <circle cx="64" cy="195" r="5" fill="var(--gold)"/>
-            <circle cx="110" cy="110" r="30" fill="#f3c9a0"/>
-            <path d="M96,116 q14,10 28,0" stroke="#7a4a25" stroke-width="3" fill="none" stroke-linecap="round"/>
-            <path d="M78,100 C78,68 142,68 142,100 L142,92 C142,60 78,60 78,92 Z" fill="var(--ink-soft)" stroke="var(--border-strong)" stroke-width="2"/>
-            <path d="M76,92 C76,55 144,55 144,92" fill="none" stroke="var(--gold)" stroke-width="4"/>
-            <path d="M76,80 C50,70 40,45 48,25 C60,40 72,55 82,68 Z" fill="var(--surface)" stroke="var(--gold)" stroke-width="2"/>
-            <path d="M144,80 C170,70 180,45 172,25 C160,40 148,55 138,68 Z" fill="var(--surface)" stroke="var(--gold)" stroke-width="2"/>
-            <rect x="84" y="100" width="52" height="16" rx="8" fill="var(--accent)" opacity="0.85"/>
-            <rect x="84" y="100" width="52" height="16" rx="8" fill="none" stroke="var(--accent-strong)" stroke-width="1.5"/>
-            <path d="M100,128 q10,8 20,0" stroke="#7a4a25" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-          </svg>
+          <img src="mascot.webp" alt="Optimus, la mascotte" width="808" height="667" />
         </div>
         <div class="mock-card mock-pay">
           <div class="mock-pay-top">
