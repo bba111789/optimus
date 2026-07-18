@@ -278,7 +278,35 @@
   .mode-toggle[data-mode="entreprise"] .thumb { transform: translateX(100%); }
 
   /* ---------- hero ---------- */
-  .hero { position: relative; overflow: hidden; background-image: var(--mesh); }
+  .hero {
+    position: relative; overflow: hidden;
+    --ink: #f3f0ff; --ink-soft: #c6bce6; --muted: #9084bb;
+    --surface: rgba(255,255,255,0.06); --surface-2: rgba(255,255,255,0.09);
+    --surface-hover: rgba(255,255,255,0.12);
+    --border: rgba(255,255,255,0.14); --border-strong: rgba(255,255,255,0.28);
+    --accent: #b794ff; --accent-strong: #9b6bff; --accent-ink: #1a0f36;
+    --shadow-strong: rgba(0,0,0,0.55);
+    --glow: rgba(183, 148, 255, 0.55); --glow-soft: rgba(183, 148, 255, 0.22);
+    background:
+      radial-gradient(560px 460px at 76% 46%, rgba(155, 107, 255, 0.4), transparent 62%),
+      radial-gradient(420px 380px at 88% 62%, rgba(216, 90, 220, 0.28), transparent 60%),
+      linear-gradient(160deg, #180b30 0%, #130a26 45%, #0b0616 100%);
+  }
+  .hero::before {
+    content: ""; position: absolute; inset: 0; pointer-events: none; opacity: 0.7;
+    background-image:
+      radial-gradient(1.5px 1.5px at 12% 18%, #fff, transparent),
+      radial-gradient(1.5px 1.5px at 28% 62%, #fff, transparent),
+      radial-gradient(1px 1px at 44% 12%, #fff, transparent),
+      radial-gradient(1.5px 1.5px at 62% 30%, #fff, transparent),
+      radial-gradient(1px 1px at 71% 78%, #fff, transparent),
+      radial-gradient(1.5px 1.5px at 83% 22%, #fff, transparent),
+      radial-gradient(1px 1px at 92% 68%, #fff, transparent),
+      radial-gradient(1.5px 1.5px at 18% 85%, #fff, transparent),
+      radial-gradient(1px 1px at 53% 90%, #fff, transparent);
+    background-repeat: no-repeat;
+  }
+  .hero .wrap { position: relative; z-index: 1; }
   .hero-inner {
     position: relative; z-index: 1; padding: 76px 0 40px;
     display: grid; grid-template-columns: 1.05fr 0.95fr; gap: 40px; align-items: center;
@@ -338,7 +366,7 @@
   .btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
   /* floating mockup composition */
-  .hero-visual { position: relative; min-height: 640px; }
+  .hero-visual { position: relative; min-height: 560px; display: flex; align-items: center; justify-content: center; }
   .mock-card {
     position: absolute; background: var(--surface); border-radius: 20px;
     box-shadow: 0 30px 60px -20px var(--shadow-strong), 0 0 0 1px var(--border);
@@ -389,14 +417,21 @@
   .mock-dash-foot span:last-child { color: var(--ink); font-weight: 700; font-variant-numeric: tabular-nums; }
 
   .mascot {
-    position: absolute; left: 7%; bottom: 40px; width: 420px; z-index: 0;
+    position: relative; width: 78%; max-width: 460px; z-index: 0;
     pointer-events: none;
   }
   .mascot::before {
-    content: ""; position: absolute; left: 50%; bottom: 2%; width: 74%; height: 44px;
+    content: ""; position: absolute; left: 50%; bottom: 4%; width: 82%; height: 40px;
     transform: translateX(-50%);
+    border-radius: 50%;
     background: radial-gradient(closest-side, var(--glow) 0%, transparent 72%);
-    filter: blur(8px);
+    filter: blur(2px);
+  }
+  .mascot::after {
+    content: ""; position: absolute; left: 50%; top: 46%; width: 128%; aspect-ratio: 1;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    background: radial-gradient(closest-side, transparent 58%, var(--glow-soft) 68%, transparent 76%);
   }
   .mascot img {
     position: relative; width: 100%; height: auto; display: block;
@@ -887,29 +922,6 @@
       <div class="hero-visual" aria-hidden="true">
         <div class="mascot">
           <img src="/mascot.webp" alt="Optimus, la mascotte" width="480" height="380" />
-        </div>
-        <div class="mock-card mock-pay">
-          <div class="mock-pay-top">
-            <span class="mock-avatar">⚡</span>
-            <div>
-              <div class="mock-pay-title">Énergie</div>
-              <div class="mock-pay-sub">Mint Énergie · Online</div>
-            </div>
-          </div>
-          <div class="mock-pay-price">71 <span>€/mois</span></div>
-          <div class="mock-pay-old">au lieu de 89 €/mois</div>
-          <button class="mock-pay-btn" type="button" tabindex="-1">Activer l'offre</button>
-        </div>
-        <div class="mock-card mock-dash">
-          <div class="mock-dash-head">
-            <span>Aujourd'hui</span>
-            <span class="mock-dash-badge">+18 %</span>
-          </div>
-          <div class="mock-dash-num">1 284 €</div>
-          <svg class="mock-spark" viewBox="0 0 100 30" preserveAspectRatio="none">
-            <polyline points="0,26 20,20 40,22 60,10 80,14 100,4"></polyline>
-          </svg>
-          <div class="mock-dash-foot"><span>Économies cumulées</span><span>1 380 €/an</span></div>
         </div>
       </div>
     </div>
