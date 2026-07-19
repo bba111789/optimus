@@ -1549,7 +1549,19 @@
       `;
     }).join("");
 
-    els("#activationRows .action-btn").forEach((btn) => {
+    rows.innerHTML += `
+      <div class="activation-row">
+        <div>
+          <div class="a-cat">Accompagnement personnalisé</div>
+          <div class="a-detail">Contacter un coach Optimus pour optimiser mon budget</div>
+        </div>
+        <div class="action-btn-group">
+          <button class="action-btn coach-cta-btn" type="button" id="coachCtaBtn">Contacter</button>
+        </div>
+      </div>
+    `;
+
+    els("#activationRows .action-btn:not(.coach-cta-btn)").forEach((btn) => {
       btn.addEventListener("click", () => {
         const o = list[Number(btn.dataset.index)];
         const a = ACTION_LABELS[btn.dataset.action];
@@ -1562,6 +1574,16 @@
         }
       });
     });
+
+    const coachBtn = el("#coachCtaBtn");
+    if (coachBtn) {
+      coachBtn.addEventListener("click", () => {
+        coachBtn.disabled = true;
+        coachBtn.textContent = "✓ Contacté";
+        showToast("Démonstration — mise en relation simulée avec un coach budgétaire Optimus.");
+        coachBtn.closest(".activation-row").classList.add("done");
+      });
+    }
   }
 
   function attachBarTooltips() {
