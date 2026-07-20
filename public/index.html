@@ -1156,17 +1156,17 @@
       <!-- STEP 5 -->
       <section class="panel" data-panel="5">
         <h3>Votre économie transformée en capacité de crédit</h3>
-        <p class="panel-sub">Réinjectez tout ou partie de votre économie mensuelle dans un projet immobilier ou un crédit en cours, selon la règle HCSF (taux d'endettement max 35 %, assurance incluse).</p>
+        <p class="panel-sub" id="creditPanelSub">Réinjectez tout ou partie de votre économie mensuelle dans un projet immobilier ou un crédit en cours, selon la règle HCSF (taux d'endettement max 35 %, assurance incluse).</p>
 
         <div class="credit-income-row">
           <div>
-            <label class="field-label" for="netIncomeInput">Revenus nets mensuels du foyer</label>
+            <label class="field-label" id="netIncomeLabel" for="netIncomeInput">Revenus nets mensuels du foyer</label>
             <div class="credit-num-field">
               <input type="number" id="netIncomeInput" min="0" step="50" value="3200">
               <span>€ / mois</span>
             </div>
           </div>
-          <label class="credit-check">
+          <label class="credit-check" id="newBuildRow">
             <input type="checkbox" id="newBuildCheck">
             Achat dans le neuf ou travaux &gt; 25 % du coût total (durée max 27 ans)
           </label>
@@ -1183,7 +1183,7 @@
           </div>
 
           <div class="remb-inputs" id="rembInputs" hidden>
-            <label>Capital restant dû<input type="number" id="crdInput" min="0" step="1000" value="180000"></label>
+            <label id="crdLabel">Capital restant dû<input type="number" id="crdInput" min="0" step="1000" value="180000"></label>
             <label>Taux annuel du crédit (%)<input type="number" id="tauxCreditInput" min="0" step="0.1" value="3.2"></label>
             <label>Mensualité actuelle (€)<input type="number" id="mensualiteInput" min="0" step="10" value="850"></label>
           </div>
@@ -1203,9 +1203,9 @@
         </div>
 
         <div class="coach-highlight">
-          <div class="coach-highlight-badge">Accompagnement personnalisé</div>
-          <h4>Contacter un coach Optimus pour optimiser mon budget</h4>
-          <p class="coach-highlight-sub">Un conseiller partenaire reprend votre dossier de capacité de crédit et sécurise votre projet — voici les plus proches de chez vous.</p>
+          <div class="coach-highlight-badge" id="coachBadge">Accompagnement personnalisé</div>
+          <h4 id="coachHeadline">Contacter un coach Optimus pour optimiser mon budget</h4>
+          <p class="coach-highlight-sub" id="coachSub">Un conseiller partenaire reprend votre dossier de capacité de crédit et sécurise votre projet — voici les plus proches de chez vous.</p>
           <div class="advisor-grid" id="advisorGrid"></div>
         </div>
       </section>
@@ -1398,7 +1398,58 @@
   let currentMonthlySavings = 0;
   let flechagePct = 50;
   let flechageMode = "epargne";
-  const HCSF_RATE = 3.5;
+  let lastCreditMode = null;
+
+  const CREDIT_MODES = {
+    particulier: {
+      panelSub: "Réinjectez tout ou partie de votre économie mensuelle dans un projet immobilier ou un crédit en cours, selon la règle HCSF (taux d'endettement max 35 %, assurance incluse).",
+      incomeLabel: "Revenus nets mensuels du foyer",
+      incomeDefault: 3200,
+      showNewBuild: true,
+      rate: 3.5,
+      years: 25,
+      yearsAlt: 27,
+      ratioThreshold: 0.35,
+      ratioRuleLabel: "plafond HCSF : 35 % du foyer, assurance incluse",
+      ratioPendingLabel: "Renseignez vos revenus nets mensuels pour vérifier le taux d'endettement HCSF (max 35 %).",
+      capacityLabel: "capacité d'emprunt",
+      crdLabel: "Capital restant dû",
+      crdDefault: 180000,
+      tauxDefault: 3.2,
+      mensualiteDefault: 850,
+      epargneLabel: "Épargne projet",
+      remboursementLabel: "Remboursement anticipé",
+      apportLabel: "d'apport potentiel",
+      totalLabel: "un pouvoir d'achat immobilier total (apport + capacité d'emprunt)",
+      coachBadge: "Accompagnement personnalisé",
+      coachHeadline: "Contacter un coach Optimus pour optimiser mon budget",
+      coachSub: "Un conseiller partenaire reprend votre dossier de capacité de crédit et sécurise votre projet — voici les plus proches de chez vous.",
+    },
+    entreprise: {
+      panelSub: "Réinjectez tout ou partie de l'économie mensuelle de l'entreprise dans de la trésorerie ou un crédit professionnel en cours (indicatif, hors garanties bancaires).",
+      incomeLabel: "Résultat net mensuel de l'entreprise",
+      incomeDefault: 12000,
+      showNewBuild: false,
+      rate: 4.2,
+      years: 7,
+      yearsAlt: 7,
+      ratioThreshold: 0.3,
+      ratioRuleLabel: "seuil prudentiel usuel : 30 % du résultat net mensuel",
+      ratioPendingLabel: "Renseignez le résultat net mensuel de l'entreprise pour vérifier le seuil prudentiel (30 %).",
+      capacityLabel: "capacité d'emprunt professionnel",
+      crdLabel: "Capital restant dû (crédit pro)",
+      crdDefault: 45000,
+      tauxDefault: 4.5,
+      mensualiteDefault: 1200,
+      epargneLabel: "Épargne trésorerie",
+      remboursementLabel: "Remboursement anticipé",
+      apportLabel: "de trésorerie disponible",
+      totalLabel: "une capacité d'investissement totale (trésorerie + capacité d'emprunt professionnel)",
+      coachBadge: "Accompagnement personnalisé",
+      coachHeadline: "Contacter un coach Optimus pour optimiser la trésorerie de l'entreprise",
+      coachSub: "Un conseiller partenaire reprend votre dossier de financement professionnel et sécurise votre projet — voici les plus proches de chez vous.",
+    },
+  };
 
   const el = (sel) => document.querySelector(sel);
   const els = (sel) => Array.from(document.querySelectorAll(sel));
@@ -1732,7 +1783,7 @@
     renderCreditStep();
   }
 
-  function renderProjection(flechageAmount, capacity) {
+  function renderProjection(flechageAmount, capacity, cfg) {
     const months = 24;
     const summary = el("#projectionSummary");
 
@@ -1750,7 +1801,7 @@
         endLabel: fmtEUR(values[values.length - 1]),
       });
       const apport = flechageAmount * months;
-      summary.innerHTML = `Après <b>${months} mois</b> à <b>${fmtEUR(flechageAmount)}/mois</b>, vous auriez épargné <b>${fmtEUR(apport)}</b> d'apport potentiel, pour un pouvoir d'achat immobilier total (apport + capacité d'emprunt) de <b>${fmtEUR(capacity + apport)}</b>.`;
+      summary.innerHTML = `Après <b>${months} mois</b> à <b>${fmtEUR(flechageAmount)}/mois</b>, vous auriez accumulé <b>${fmtEUR(apport)}</b> ${cfg.apportLabel}, pour ${cfg.totalLabel} de <b>${fmtEUR(capacity + apport)}</b>.`;
       return;
     }
 
@@ -1798,30 +1849,56 @@
     summary.innerHTML = `En réinjectant <b>${fmtEUR(flechageAmount)}/mois</b>, le crédit serait soldé <b>${monthsSaved} mois plus tôt</b> (${accelerated.months} mois au lieu de ${baseline.months}), pour environ <b>${fmtEUR(interestSaved)}</b> d'intérêts économisés.`;
   }
 
+  function applyCreditModeConfig() {
+    const cfg = CREDIT_MODES[currentMode];
+    const modeChanged = lastCreditMode !== currentMode;
+    lastCreditMode = currentMode;
+
+    el("#creditPanelSub").textContent = cfg.panelSub;
+    el("#netIncomeLabel").textContent = cfg.incomeLabel;
+    el("#crdLabel").childNodes[0].nodeValue = cfg.crdLabel;
+    el("#flechModeEpargne").textContent = cfg.epargneLabel;
+    el("#flechModeRemb").textContent = cfg.remboursementLabel;
+    el("#newBuildRow").style.display = cfg.showNewBuild ? "" : "none";
+    el("#coachBadge").textContent = cfg.coachBadge;
+    el("#coachHeadline").textContent = cfg.coachHeadline;
+    el("#coachSub").textContent = cfg.coachSub;
+
+    if (modeChanged) {
+      el("#netIncomeInput").value = cfg.incomeDefault;
+      el("#crdInput").value = cfg.crdDefault;
+      el("#tauxCreditInput").value = cfg.tauxDefault;
+      el("#mensualiteInput").value = cfg.mensualiteDefault;
+      el("#newBuildCheck").checked = false;
+    }
+    return cfg;
+  }
+
   function renderCreditStep() {
+    const cfg = applyCreditModeConfig();
     const flechageAmount = Math.round(currentMonthlySavings * (flechagePct / 100) * 100) / 100;
-    const years = el("#newBuildCheck").checked ? 27 : 25;
+    const years = cfg.showNewBuild && el("#newBuildCheck").checked ? cfg.yearsAlt : cfg.years;
 
     el("#flechagePctLabel").textContent = flechagePct + " %";
     el("#flechageAmount").innerHTML = currentMonthlySavings > 0
       ? `<b>${fmtEUR(flechageAmount)}</b> réinjectés chaque mois sur les <b>${fmtEUR(currentMonthlySavings)}</b> détectés.`
       : `Complétez le diagnostic pour détecter votre économie mensuelle.`;
 
-    const capacity = loanCapacityFromPayment(flechageAmount, HCSF_RATE, years);
+    const capacity = loanCapacityFromPayment(flechageAmount, cfg.rate, years);
     const netIncome = Number(el("#netIncomeInput").value) || 0;
 
-    let hcsfHTML = `<div class="hcsf-headline">Votre économie de <b>${fmtEUR(flechageAmount)}/mois</b> réinjectée représente <b>${fmtEUR(capacity)}</b> de capacité d'emprunt en plus <span class="hcsf-note">(indicatif, ${HCSF_RATE.toString().replace(".", ",")} % sur ${years} ans)</span></div>`;
+    let hcsfHTML = `<div class="hcsf-headline">Votre économie de <b>${fmtEUR(flechageAmount)}/mois</b> réinjectée représente <b>${fmtEUR(capacity)}</b> de ${cfg.capacityLabel} en plus <span class="hcsf-note">(indicatif, ${cfg.rate.toString().replace(".", ",")} % sur ${years} ans)</span></div>`;
     if (netIncome > 0) {
-      const maxAllowed = netIncome * 0.35;
+      const maxAllowed = netIncome * cfg.ratioThreshold;
       const ratioUsed = (flechageAmount / netIncome) * 100;
       const withinLimit = flechageAmount <= maxAllowed;
-      hcsfHTML += `<div class="hcsf-ratio ${withinLimit ? "ok" : "warn"}">Cette mensualité potentielle représente <b>${ratioUsed.toFixed(1).replace(".", ",")} %</b> de vos revenus nets — plafond HCSF : 35 % du foyer, assurance incluse (<b>${fmtEUR(maxAllowed)}</b>/mois max).</div>`;
+      hcsfHTML += `<div class="hcsf-ratio ${withinLimit ? "ok" : "warn"}">Cette mensualité potentielle représente <b>${ratioUsed.toFixed(1).replace(".", ",")} %</b> — ${cfg.ratioRuleLabel} (<b>${fmtEUR(maxAllowed)}</b>/mois max).</div>`;
     } else {
-      hcsfHTML += `<div class="hcsf-ratio pending">Renseignez vos revenus nets mensuels pour vérifier le taux d'endettement HCSF (max 35 %).</div>`;
+      hcsfHTML += `<div class="hcsf-ratio pending">${cfg.ratioPendingLabel}</div>`;
     }
     el("#hcsfCard").innerHTML = hcsfHTML;
 
-    renderProjection(flechageAmount, capacity);
+    renderProjection(flechageAmount, capacity, cfg);
   }
 
   const ACTION_LABELS = {
