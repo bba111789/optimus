@@ -508,7 +508,7 @@
   .chrome-status .status-dot { animation: none; box-shadow: 0 0 0 3px var(--glow-soft); }
   .chrome-id { font-family: var(--font-mono); font-size: 0.72rem; color: var(--muted); }
 
-  .stepper { display: grid; grid-template-columns: repeat(4, 1fr); border-bottom: 1px solid var(--border); }
+  .stepper { display: grid; grid-template-columns: repeat(5, 1fr); border-bottom: 1px solid var(--border); }
   .step-tab {
     display: flex; align-items: center; gap: 10px; text-align: left;
     padding: 14px 16px; background: color-mix(in oklab, var(--step-color) 6%, transparent);
@@ -543,8 +543,8 @@
   .step-tab:hover .step-label { color: var(--step-color); }
   .step-tab:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
 
-  .step-tab[data-step="4"]:not(.active) { animation: nudge-pulse 2.6s ease-in-out infinite; }
-  .step-tab[data-step="4"]:not(.active) .step-badge { animation: nudge-badge 2.6s ease-in-out infinite; }
+  .step-tab[data-step="5"]:not(.active) { animation: nudge-pulse 2.6s ease-in-out infinite; }
+  .step-tab[data-step="5"]:not(.active) .step-badge { animation: nudge-badge 2.6s ease-in-out infinite; }
   @keyframes nudge-pulse {
     0%, 100% { background: color-mix(in oklab, var(--step-color) 6%, transparent); }
     50% { background: color-mix(in oklab, var(--step-color) 22%, transparent); }
@@ -816,6 +816,75 @@
   }
   .toast.visible { opacity: 1; transform: translate(-50%, 0); }
 
+  /* step 5 */
+  .step-tab[data-step="5"] { --step-color: var(--teal); }
+
+  .field-label {
+    display: block; font-size: 0.78rem; font-weight: 700; color: var(--ink-soft); margin-bottom: 8px;
+  }
+  .credit-income-row {
+    display: flex; flex-wrap: wrap; align-items: flex-end; gap: 20px 28px; margin-bottom: 22px;
+  }
+  .credit-num-field {
+    display: flex; align-items: center; gap: 8px;
+    border: 1px solid var(--border-strong); border-radius: 10px; background: var(--surface);
+    padding: 10px 14px;
+  }
+  .credit-num-field input {
+    border: none; background: transparent; color: var(--ink); font-family: var(--font-mono);
+    font-size: 0.94rem; font-weight: 700; width: 110px; font-variant-numeric: tabular-nums;
+  }
+  .credit-num-field input:focus { outline: none; }
+  .credit-num-field span { color: var(--muted); font-size: 0.82rem; }
+  .credit-check {
+    display: flex; align-items: center; gap: 9px; font-size: 0.84rem; color: var(--ink-soft);
+    max-width: 34ch; cursor: pointer;
+  }
+  .credit-check input { width: 16px; height: 16px; accent-color: var(--accent); flex-shrink: 0; }
+
+  .hcsf-card {
+    border: 1px solid var(--border); border-radius: 14px; padding: 20px 22px; margin-bottom: 22px;
+    background: color-mix(in oklab, var(--accent) 6%, var(--surface));
+  }
+  .hcsf-headline { font-size: 1.02rem; color: var(--ink); line-height: 1.5; }
+  .hcsf-headline b { color: var(--accent-strong); }
+  .hcsf-note { color: var(--muted); font-size: 0.8rem; }
+  .hcsf-ratio { margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border); font-size: 0.86rem; color: var(--ink-soft); }
+  .hcsf-ratio b { color: var(--ink); }
+  .hcsf-ratio.warn { color: var(--coral); }
+  .hcsf-ratio.warn b { color: var(--coral); }
+  .hcsf-ratio.pending { color: var(--muted); font-style: italic; }
+
+  .flechage-card {
+    border: 1px solid var(--border); border-radius: 14px; padding: 20px 22px; margin-bottom: 22px;
+  }
+  .flechage-head h4 { margin: 0 0 14px; font-size: 1rem; font-weight: 800; }
+  .remb-inputs { display: flex; flex-wrap: wrap; gap: 14px 20px; margin: 16px 0 6px; }
+  .remb-inputs[hidden] { display: none; }
+  .remb-inputs label { display: flex; flex-direction: column; gap: 6px; font-size: 0.8rem; color: var(--ink-soft); font-weight: 600; }
+  .remb-inputs input {
+    border: 1px solid var(--border-strong); border-radius: 9px; background: var(--surface); color: var(--ink);
+    padding: 9px 12px; font-family: var(--font-mono); font-size: 0.9rem; width: 150px;
+  }
+  .remb-inputs input:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
+  .flechage-slider-row { display: flex; align-items: center; gap: 14px; margin-top: 18px; flex-wrap: wrap; }
+  .flechage-slider-row > span:first-child { font-size: 0.82rem; color: var(--muted); font-weight: 600; flex-shrink: 0; }
+  .flechage-slider-row input[type="range"] {
+    flex: 1; min-width: 160px; accent-color: var(--accent); height: 4px;
+  }
+  .flechage-pct {
+    font-family: var(--font-mono); font-weight: 800; color: var(--accent-strong);
+    min-width: 3.5em; text-align: right; font-variant-numeric: tabular-nums;
+  }
+  .flechage-amount { margin-top: 14px; font-size: 0.9rem; color: var(--ink-soft); }
+  .flechage-amount b { color: var(--ink); font-family: var(--font-mono); }
+
+  .projection-card { border: 1px solid var(--border); border-radius: 14px; padding: 20px 22px; }
+  .projection-card h4 { margin: 0 0 14px; font-size: 1rem; font-weight: 800; }
+  .projection-chart { width: 100%; height: 140px; display: block; }
+  .projection-summary { margin-top: 14px; font-size: 0.9rem; color: var(--ink-soft); line-height: 1.6; }
+  .projection-summary b { color: var(--ink); font-family: var(--font-mono); }
+
   /* ---------- partners ---------- */
   #partners { padding: 70px 0 30px; border-top: 1px solid var(--border); }
   .partner-group { margin-bottom: 32px; }
@@ -1003,6 +1072,10 @@
       <button class="step-tab" data-step="4" role="tab" aria-selected="false">
         <span class="step-badge">04</span>
         <span class="step-label-group"><span class="step-label">Nos recommandations</span></span>
+      </button>
+      <button class="step-tab" data-step="5" role="tab" aria-selected="false">
+        <span class="step-badge">05</span>
+        <span class="step-label-group"><span class="step-label">Capacité de crédit</span></span>
         <span class="nudge-arrow" aria-hidden="true">→</span>
       </button>
     </div>
@@ -1086,6 +1159,56 @@
             <p>Une ligne, une action. Optimus prépare tout — vous validez.</p>
           </div>
           <div class="activation-rows" id="activationRows"></div>
+        </div>
+      </section>
+
+      <!-- STEP 5 -->
+      <section class="panel" data-panel="5">
+        <h3>Votre économie transformée en capacité de crédit</h3>
+        <p class="panel-sub">Réinjectez tout ou partie de votre économie mensuelle dans un projet immobilier ou un crédit en cours, selon la règle HCSF (taux d'endettement max 35 %, assurance incluse).</p>
+
+        <div class="credit-income-row">
+          <div>
+            <label class="field-label" for="netIncomeInput">Revenus nets mensuels du foyer</label>
+            <div class="credit-num-field">
+              <input type="number" id="netIncomeInput" min="0" step="50" placeholder="3 200">
+              <span>€ / mois</span>
+            </div>
+          </div>
+          <label class="credit-check">
+            <input type="checkbox" id="newBuildCheck">
+            Achat dans le neuf ou travaux &gt; 25 % du coût total (durée max 27 ans)
+          </label>
+        </div>
+
+        <div class="hcsf-card" id="hcsfCard"></div>
+
+        <div class="flechage-card">
+          <div class="flechage-head"><h4>Comment réinjecter cette économie ?</h4></div>
+          <div class="sort-row">
+            <span>Destination</span>
+            <button class="chip-btn active" id="flechModeEpargne" type="button">Épargne projet</button>
+            <button class="chip-btn" id="flechModeRemb" type="button">Remboursement anticipé</button>
+          </div>
+
+          <div class="remb-inputs" id="rembInputs" hidden>
+            <label>Capital restant dû<input type="number" id="crdInput" min="0" step="1000" placeholder="180 000"></label>
+            <label>Taux annuel du crédit (%)<input type="number" id="tauxCreditInput" min="0" step="0.1" placeholder="3,2"></label>
+            <label>Mensualité actuelle (€)<input type="number" id="mensualiteInput" min="0" step="10" placeholder="850"></label>
+          </div>
+
+          <div class="flechage-slider-row">
+            <span>Part de l'économie réinjectée</span>
+            <input type="range" id="flechageSlider" min="0" max="100" value="50">
+            <span class="flechage-pct" id="flechagePctLabel">50 %</span>
+          </div>
+          <div class="flechage-amount" id="flechageAmount"></div>
+        </div>
+
+        <div class="projection-card">
+          <h4>Projection mois après mois</h4>
+          <svg class="projection-chart" id="projectionChart" viewBox="0 0 600 140" preserveAspectRatio="none"></svg>
+          <div class="projection-summary" id="projectionSummary"></div>
         </div>
       </section>
     </div>
@@ -1246,6 +1369,10 @@
   let currentSort = "savings";
   let currentCatSort = "budget";
   let isConnected = false;
+  let currentMonthlySavings = 0;
+  let flechagePct = 50;
+  let flechageMode = "epargne";
+  const HCSF_RATE = 3.5;
 
   const el = (sel) => document.querySelector(sel);
   const els = (sel) => Array.from(document.querySelectorAll(sel));
@@ -1499,6 +1626,7 @@
 
   function renderBilan(d) {
     const total = Math.round((d.opportunities.reduce((sum, o) => sum + (o.currentPrice - o.recoPrice), 0)) * 100) / 100;
+    currentMonthlySavings = total;
     const annual = Math.round(total * 12);
     const bilanNode = el("#bilanNum");
     bilanNode.dataset.target = annual;
@@ -1516,6 +1644,118 @@
 
     el("#activationList").classList.add("visible");
     renderActivationList(d);
+  }
+
+  function loanCapacityFromPayment(monthlyPayment, annualRatePct, years) {
+    if (monthlyPayment <= 0) return 0;
+    const i = annualRatePct / 100 / 12;
+    const n = years * 12;
+    if (i === 0) return monthlyPayment * n;
+    return monthlyPayment * (1 - Math.pow(1 + i, -n)) / i;
+  }
+
+  function drawProjectionLine(values) {
+    const svg = el("#projectionChart");
+    if (!values.length) { svg.innerHTML = ""; return; }
+    const w = 600, h = 140, pad = 8;
+    const max = Math.max(...values, 1);
+    const min = Math.min(...values, 0);
+    const range = (max - min) || 1;
+    const stepX = values.length > 1 ? (w - pad * 2) / (values.length - 1) : 0;
+    const pts = values.map((v, i) => {
+      const x = pad + i * stepX;
+      const y = h - pad - ((v - min) / range) * (h - pad * 2);
+      return `${x.toFixed(1)},${y.toFixed(1)}`;
+    }).join(" ");
+    svg.innerHTML = `<polyline points="${pts}" fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke"></polyline>`;
+  }
+
+  function setFlechageMode(mode) {
+    flechageMode = mode;
+    el("#flechModeEpargne").classList.toggle("active", mode === "epargne");
+    el("#flechModeRemb").classList.toggle("active", mode === "remboursement");
+    el("#rembInputs").hidden = mode !== "remboursement";
+    renderCreditStep();
+  }
+
+  function renderProjection(flechageAmount, capacity) {
+    const months = 24;
+    const summary = el("#projectionSummary");
+
+    if (flechageMode === "epargne") {
+      const values = [];
+      for (let m = 0; m <= months; m++) values.push(capacity + flechageAmount * m);
+      drawProjectionLine(values);
+      const apport = flechageAmount * months;
+      summary.innerHTML = flechageAmount > 0
+        ? `Après <b>${months} mois</b>, vous auriez épargné <b>${fmtEUR(apport)}</b> d'apport potentiel, pour un pouvoir d'achat immobilier total (apport + capacité d'emprunt) de <b>${fmtEUR(capacity + apport)}</b>.`
+        : `Choisissez une part de l'économie à flécher pour lancer la projection.`;
+      return;
+    }
+
+    const crd = Number(el("#crdInput").value) || 0;
+    const tauxCredit = Number(el("#tauxCreditInput").value) || 0;
+    const mensualite = Number(el("#mensualiteInput").value) || 0;
+    if (!crd || !mensualite) {
+      drawProjectionLine([]);
+      summary.innerHTML = `Renseignez le capital restant dû et la mensualité actuelle pour simuler le remboursement anticipé.`;
+      return;
+    }
+    const monthlyRate = tauxCredit / 100 / 12;
+    function simulate(extra) {
+      let balance = crd;
+      let m = 0;
+      let totalInterest = 0;
+      const series = [balance];
+      while (balance > 0.5 && m < 600) {
+        const interest = balance * monthlyRate;
+        let principal = mensualite - interest + extra;
+        if (principal <= 0) { m = 600; break; }
+        if (principal > balance) principal = balance;
+        balance -= principal;
+        totalInterest += interest;
+        m++;
+        series.push(balance);
+      }
+      return { months: m, totalInterest, series };
+    }
+    const baseline = simulate(0);
+    const accelerated = simulate(flechageAmount);
+    drawProjectionLine(accelerated.series.slice(0, months + 1));
+
+    if (accelerated.months >= 600) {
+      summary.innerHTML = `La mensualité actuelle ne suffit pas à amortir ce capital à ce taux — augmentez la mensualité ou vérifiez les montants saisis.`;
+      return;
+    }
+    const monthsSaved = Math.max(0, baseline.months - accelerated.months);
+    const interestSaved = Math.max(0, baseline.totalInterest - accelerated.totalInterest);
+    summary.innerHTML = `En réinjectant <b>${fmtEUR(flechageAmount)}/mois</b>, le crédit serait soldé <b>${monthsSaved} mois plus tôt</b> (${accelerated.months} mois au lieu de ${baseline.months}), pour environ <b>${fmtEUR(interestSaved)}</b> d'intérêts économisés.`;
+  }
+
+  function renderCreditStep() {
+    const flechageAmount = Math.round(currentMonthlySavings * (flechagePct / 100) * 100) / 100;
+    const years = el("#newBuildCheck").checked ? 27 : 25;
+
+    el("#flechagePctLabel").textContent = flechagePct + " %";
+    el("#flechageAmount").innerHTML = currentMonthlySavings > 0
+      ? `<b>${fmtEUR(flechageAmount)}</b> réinjectés chaque mois sur les <b>${fmtEUR(currentMonthlySavings)}</b> détectés.`
+      : `Complétez le diagnostic pour détecter votre économie mensuelle.`;
+
+    const capacity = loanCapacityFromPayment(flechageAmount, HCSF_RATE, years);
+    const netIncome = Number(el("#netIncomeInput").value) || 0;
+
+    let hcsfHTML = `<div class="hcsf-headline">Votre économie de <b>${fmtEUR(flechageAmount)}/mois</b> réinjectée représente <b>${fmtEUR(capacity)}</b> de capacité d'emprunt en plus <span class="hcsf-note">(indicatif, ${HCSF_RATE.toString().replace(".", ",")} % sur ${years} ans)</span></div>`;
+    if (netIncome > 0) {
+      const maxAllowed = netIncome * 0.35;
+      const ratioUsed = (flechageAmount / netIncome) * 100;
+      const withinLimit = flechageAmount <= maxAllowed;
+      hcsfHTML += `<div class="hcsf-ratio ${withinLimit ? "ok" : "warn"}">Cette mensualité potentielle représente <b>${ratioUsed.toFixed(1).replace(".", ",")} %</b> de vos revenus nets — plafond HCSF : 35 % du foyer, assurance incluse (<b>${fmtEUR(maxAllowed)}</b>/mois max).</div>`;
+    } else {
+      hcsfHTML += `<div class="hcsf-ratio pending">Renseignez vos revenus nets mensuels pour vérifier le taux d'endettement HCSF (max 35 %).</div>`;
+    }
+    el("#hcsfCard").innerHTML = hcsfHTML;
+
+    renderProjection(flechageAmount, capacity);
   }
 
   const ACTION_LABELS = {
@@ -1608,6 +1848,7 @@
     els(".panel").forEach((p) => p.classList.toggle("active", Number(p.dataset.panel) === n));
     if (n === 2) reanimateBars();
     if (n === 4) renderBilan(MODES[currentMode]);
+    if (n === 5) renderCreditStep();
   }
 
   let toastTimer;
@@ -1631,7 +1872,20 @@
       isConnected = false;
       render(currentMode);
       setHeroStat(PENDING_STAT.amount, PENDING_STAT.label, PENDING_STAT.score);
+      renderCreditStep();
     });
+  });
+
+  el("#netIncomeInput").addEventListener("input", renderCreditStep);
+  el("#newBuildCheck").addEventListener("change", renderCreditStep);
+  el("#flechageSlider").addEventListener("input", (e) => {
+    flechagePct = Number(e.target.value);
+    renderCreditStep();
+  });
+  el("#flechModeEpargne").addEventListener("click", () => setFlechageMode("epargne"));
+  el("#flechModeRemb").addEventListener("click", () => setFlechageMode("remboursement"));
+  ["#crdInput", "#tauxCreditInput", "#mensualiteInput"].forEach((sel) => {
+    el(sel).addEventListener("input", renderCreditStep);
   });
 
   el("#tableToggle").addEventListener("click", () => {
@@ -1674,6 +1928,7 @@
   render(currentMode);
   setHeroStat(NEUTRAL_STAT.amount, NEUTRAL_STAT.label, NEUTRAL_STAT.score);
   renderPartners();
+  renderCreditStep();
 })();
 </script>
 </body>
