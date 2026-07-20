@@ -759,6 +759,24 @@
   }
   .toast.visible { opacity: 1; transform: translate(-50%, 0); }
 
+  .modal-overlay {
+    position: fixed; inset: 0; z-index: 300; padding: 20px;
+    display: flex; align-items: center; justify-content: center;
+    background: rgba(10, 6, 20, 0.55); backdrop-filter: blur(3px); -webkit-backdrop-filter: blur(3px);
+  }
+  .modal-overlay[hidden] { display: none; }
+  .modal-box {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 18px;
+    padding: 28px; max-width: 420px; width: 100%;
+    box-shadow: 0 30px 70px -20px rgba(0, 0, 0, 0.55);
+    animation: rise .3s cubic-bezier(.2,.8,.2,1);
+  }
+  .modal-box h4 { margin: 0 0 10px; font-size: 1.15rem; font-weight: 800; letter-spacing: -0.01em; }
+  .modal-box p { margin: 0 0 18px; color: var(--ink-soft); font-size: 0.9rem; line-height: 1.5; }
+  .modal-box p b { color: var(--ink); }
+  .modal-choice { display: flex; gap: 10px; margin-bottom: 24px; }
+  .modal-actions { display: flex; justify-content: flex-end; gap: 10px; }
+
   /* step 5 */
   .step-tab[data-step="5"] { --step-color: var(--teal); }
 
@@ -1233,6 +1251,21 @@
 <div class="chart-tooltip" id="chartTooltip"></div>
 <div class="toast" id="toast"></div>
 
+<div class="modal-overlay" id="simModalOverlay" hidden>
+  <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="simModalTitle">
+    <h4 id="simModalTitle">Envoyer votre simulation Optimus ?</h4>
+    <p id="simModalText">Voulez-vous envoyer votre simulation Optimus à <b id="simModalAdvisor"></b> pour alimenter son analyse ?</p>
+    <div class="modal-choice">
+      <button class="chip-btn active" id="simChoiceOui" type="button">Oui</button>
+      <button class="chip-btn" id="simChoiceNon" type="button">Non</button>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" id="simModalCancel" type="button">Annuler</button>
+      <button class="btn btn-primary" id="simModalSend" type="button">Envoyer</button>
+    </div>
+  </div>
+</div>
+
 <script>
 (function () {
   const MODES = {
@@ -1339,13 +1372,30 @@
       </div>
     `).join("");
     els("#advisorGrid .coach-cta-btn").forEach((btn) => {
-      btn.addEventListener("click", () => {
-        const a = ADVISORS[Number(btn.dataset.advisor)];
-        btn.disabled = true;
-        btn.textContent = "✓ Contacté";
-        showToast(`Démonstration — mise en relation simulée avec ${a.name} (${a.role}).`);
-      });
+      btn.addEventListener("click", () => openSimModal(Number(btn.dataset.advisor)));
     });
+  }
+
+  let simModalAdvisorIndex = null;
+  let simModalChoice = "oui";
+
+  function setSimChoice(choice) {
+    simModalChoice = choice;
+    el("#simChoiceOui").classList.toggle("active", choice === "oui");
+    el("#simChoiceNon").classList.toggle("active", choice === "non");
+  }
+
+  function openSimModal(advisorIndex) {
+    const a = ADVISORS[advisorIndex];
+    simModalAdvisorIndex = advisorIndex;
+    setSimChoice("oui");
+    el("#simModalAdvisor").textContent = `${a.name} (${a.role})`;
+    el("#simModalOverlay").hidden = false;
+  }
+
+  function closeSimModal() {
+    el("#simModalOverlay").hidden = true;
+    simModalAdvisorIndex = null;
   }
 
   function monogram(name) {
@@ -2070,6 +2120,23 @@
     activation.scrollIntoView({ behavior: "smooth", block: "nearest" });
   });
   el("#ctaReport").addEventListener("click", () => showToast("Démonstration — un PDF récapitulatif serait généré ici."));
+
+  el("#simChoiceOui").addEventListener("click", () => setSimChoice("oui"));
+  el("#simChoiceNon").addEventListener("click", () => setSimChoice("non"));
+  el("#simModalCancel").addEventListener("click", closeSimModal);
+  el("#simModalOverlay").addEventListener("click", (e) => { if (e.target.id === "simModalOverlay") closeSimModal(); });
+  document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !el("#simModalOverlay").hidden) closeSimModal(); });
+  el("#simModalSend").addEventListener("click", () => {
+    if (simModalAdvisorIndex === null) return;
+    const a = ADVISORS[simModalAdvisorIndex];
+    const btn = document.querySelector(`#advisorGrid .coach-cta-btn[data-advisor="${simModalAdvisorIndex}"]`);
+    if (btn) { btn.disabled = true; btn.textContent = "✓ Contacté"; }
+    const msg = simModalChoice === "oui"
+      ? `Démonstration — simulation Optimus transmise à ${a.name} (${a.role}) pour alimenter son analyse.`
+      : `Démonstration — mise en relation simulée avec ${a.name} (${a.role}), sans partage de simulation.`;
+    showToast(msg);
+    closeSimModal();
+  });
 
   render(currentMode);
   setHeroStat(NEUTRAL_STAT.amount, NEUTRAL_STAT.label, NEUTRAL_STAT.score);
