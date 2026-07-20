@@ -828,6 +828,35 @@
   .projection-summary { margin-top: 14px; font-size: 0.9rem; color: var(--ink-soft); line-height: 1.6; }
   .projection-summary b { color: var(--ink); font-family: var(--font-mono); }
 
+  .coach-highlight {
+    margin-top: 24px; border-radius: 18px; padding: 28px 26px;
+    background: linear-gradient(155deg, color-mix(in oklab, var(--accent) 14%, var(--surface)), var(--surface));
+    border: 1px solid color-mix(in oklab, var(--accent) 30%, var(--border));
+  }
+  .coach-highlight-badge {
+    display: inline-flex; font-size: 0.72rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--accent-strong); background: color-mix(in oklab, var(--accent) 16%, transparent);
+    padding: 5px 12px; border-radius: 999px; margin-bottom: 12px;
+  }
+  .coach-highlight h4 { margin: 0 0 8px; font-size: 1.3rem; font-weight: 800; letter-spacing: -0.01em; }
+  .coach-highlight-sub { margin: 0 0 22px; color: var(--ink-soft); max-width: 62ch; font-size: 0.92rem; }
+  .advisor-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .advisor-card {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 14px;
+    padding: 20px 16px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 8px;
+    transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease;
+  }
+  .advisor-card:hover { transform: translateY(-3px); border-color: var(--border-strong); box-shadow: 0 14px 26px -18px var(--shadow-strong); }
+  .advisor-avatar {
+    width: 62px; height: 62px; border-radius: 50%; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 6px 14px -6px var(--shadow-strong);
+  }
+  .advisor-name { font-weight: 800; font-size: 0.95rem; color: var(--ink); margin-top: 4px; }
+  .advisor-role { font-size: 0.78rem; color: var(--muted); margin-bottom: 4px; }
+  .advisor-card .action-btn { width: 100%; }
+  @media (max-width: 760px) { .advisor-grid { grid-template-columns: 1fr; } }
+
   /* ---------- partners ---------- */
   #partners { padding: 70px 0 30px; border-top: 1px solid var(--border); }
   .partner-group { margin-bottom: 32px; }
@@ -1172,6 +1201,13 @@
           <svg class="projection-chart" id="projectionChart" viewBox="0 0 600 140" preserveAspectRatio="none"></svg>
           <div class="projection-summary" id="projectionSummary"></div>
         </div>
+
+        <div class="coach-highlight">
+          <div class="coach-highlight-badge">Accompagnement personnalisé</div>
+          <h4>Contacter un coach Optimus pour optimiser mon budget</h4>
+          <p class="coach-highlight-sub">Un conseiller partenaire reprend votre dossier de capacité de crédit et sécurise votre projet — voici les plus proches de chez vous.</p>
+          <div class="advisor-grid" id="advisorGrid"></div>
+        </div>
       </section>
     </div>
   </div>
@@ -1283,6 +1319,34 @@
   ];
   const FEATURED_PARTNERS = ["Finantek", "Sosh", "Total Energies"];
   const LOGO_PALETTE = ["var(--accent)", "var(--pink)", "var(--gold)", "var(--teal)", "var(--coral)", "var(--accent-strong)"];
+
+  const ADVISORS = [
+    { name: "Pierre Vicomte", role: "Finantek · Reims", color: "var(--accent)" },
+    { name: "Cybile Plenu", role: "Finantek · Épernay", color: "var(--pink)" },
+    { name: "Mickaël Saintonge", role: "Courtier indépendant · Saint-Thierry", color: "var(--gold)" },
+  ];
+  const PERSON_AVATAR_SVG = '<svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"></circle><path d="M4 20c0-4 3.6-6 8-6s8 2 8 6"></path></svg>';
+
+  function renderAdvisors() {
+    const grid = el("#advisorGrid");
+    if (!grid) return;
+    grid.innerHTML = ADVISORS.map((a, i) => `
+      <div class="advisor-card">
+        <div class="advisor-avatar" style="background:${a.color}">${PERSON_AVATAR_SVG}</div>
+        <div class="advisor-name">${a.name}</div>
+        <div class="advisor-role">${a.role}</div>
+        <button class="action-btn coach-cta-btn" type="button" data-advisor="${i}">Contacter</button>
+      </div>
+    `).join("");
+    els("#advisorGrid .coach-cta-btn").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const a = ADVISORS[Number(btn.dataset.advisor)];
+        btn.disabled = true;
+        btn.textContent = "✓ Contacté";
+        showToast(`Démonstration — mise en relation simulée avec ${a.name} (${a.role}).`);
+      });
+    });
+  }
 
   function monogram(name) {
     const words = name.trim().split(/\s+/);
@@ -1792,15 +1856,6 @@
     }).join("");
 
     rows.innerHTML += `
-      <div class="activation-row">
-        <div>
-          <div class="a-cat">Accompagnement personnalisé</div>
-          <div class="a-detail">Contacter un coach Optimus pour optimiser mon budget</div>
-        </div>
-        <div class="action-btn-group">
-          <button class="action-btn coach-cta-btn" type="button" id="coachCtaBtn">Contacter</button>
-        </div>
-      </div>
       <div class="activation-row credit-link-row">
         <div>
           <div class="a-cat">Économie détectée</div>
@@ -1815,7 +1870,7 @@
     const creditLinkBtn = el("#creditLinkBtn");
     if (creditLinkBtn) creditLinkBtn.addEventListener("click", () => goToStep(5));
 
-    els("#activationRows .action-btn:not(.coach-cta-btn):not(.credit-link-btn)").forEach((btn) => {
+    els("#activationRows .action-btn:not(.credit-link-btn)").forEach((btn) => {
       btn.addEventListener("click", () => {
         const o = list[Number(btn.dataset.index)];
         const a = ACTION_LABELS[btn.dataset.action];
@@ -1943,6 +1998,7 @@
   setHeroStat(NEUTRAL_STAT.amount, NEUTRAL_STAT.label, NEUTRAL_STAT.score);
   renderPartners();
   renderCreditStep();
+  renderAdvisors();
 })();
 </script>
 </body>
